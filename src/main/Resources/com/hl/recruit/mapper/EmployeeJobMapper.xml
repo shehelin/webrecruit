@@ -74,10 +74,9 @@
         AND t_emp_id = #{empId}
     </update>
 
-    <delete id="delEmployeeJob" parameterType="com.hl.recruit.entity.EmployeeJobEntity">
+    <delete id="delEmployeeJob" parameterType="java.lang.String">
        DELETE FROM  t_emp
        WHERE t_emp_id = #{empId}
-       AND t_user_id = #{userId}
     </delete>
 
     <select id ="queryEmployeeJob" parameterType="java.util.Map" resultMap="EmpRelComDtoResultMap">

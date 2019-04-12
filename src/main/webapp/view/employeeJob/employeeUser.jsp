@@ -68,7 +68,7 @@
 
 <table id="demo" lay-filter="test"> </table>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del">撤销申请</a>
 </script>
 
 <script type="text/javascript">
@@ -97,7 +97,7 @@
                 , {field: 'comName', title: '应聘单位', width: 140, sort: true}
                 , {field: 'status', title: '申请状态', width: 140, sort: true}
                 , {field: 'createTime', title: '申请时间', width: 140, sort: true}
-                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 130}
+                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
             ]]
         });
         //日期映射
@@ -112,27 +112,26 @@
             var tr = obj.tr; //获得当前行 tr 的DOM对象
 
             if (layEvent === 'del') { //删除
-                layer.confirm('真的删除它么', function (index) {
+                layer.confirm('真的撤销申请吗？', function (index) {
                     //向服务端发送删除指令
                     $.ajax({
                         url:'<%=contextPath%>/employeeJob/delEmployeeJob'
                         ,type:'post'
                         ,dataType:'json'
-                        ,contentType:'application/json'
-                        ,data:JSON.stringify(data)
+                        ,data:{
+                            empId: data.empId
+                        }
                         ,async:false
                         ,success:function(data){
                             if(data){
-                                layer.alert('删除成功');
+                                layer.alert('撤销成功');
                                 obj.del(); //删除对应行（tr）的DOM结构
                                 layer.close(index);
                             }else{
-                                layer.alert('删除失败');
+                                layer.alert('撤销失败');
                             }
                         }
                     });
-                    console.log("xxxxx");
-
                 });
 
             }else if(layEvent === 'update'){//编辑

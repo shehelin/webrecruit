@@ -21,10 +21,10 @@ public interface EmpRelComMapper{
 
     /**
      * 删除关联
-     * @param empRelCom
+     * @param empId
      * @return
      */
-     int delRel(EmpRelCom empRelCom);
+     int delRel(String empId);
 
     /**
      * 修改关联-审核-状态

@@ -27,10 +27,10 @@ public interface EmployeeJobMapper {
 
     /**
      * 删除求职信息
-     * @param employeeJobEntity
+     * @param empId
      * @return
      */
-    int delEmployeeJob(EmployeeJobEntity employeeJobEntity);
+    int delEmployeeJob(String empId);
 
     /**
      * 修改求职信息

@@ -1,13 +1,12 @@
 package com.hl.recruit.controller;
 
-import com.hl.recruit.dto.EmpRelComDto;
 import com.hl.recruit.entity.EmpRelCom;
 import com.hl.recruit.entity.EmployeeJobEntity;
-import com.hl.recruit.entity.UserEntity;
 import com.hl.recruit.service.impl.EmployeeJobServiceImpl;
+import com.hl.recruit.util.DataFinalStaticUtil;
 import com.hl.recruit.util.Page;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,15 +109,25 @@ public class EmployeeJobController {
 
     @RequestMapping("/delEmployeeJob")
     @ResponseBody
-    public boolean delEmployeeJob(@RequestBody Map<String,Object> map){
-        Map maps = map;
-        return false;
+    public boolean delEmployeeJob(String empId){
+        try{
+            return employeeJobService.delEmployeeJob(empId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @RequestMapping("/updateRelStatus")
     @ResponseBody
     public boolean updateRelStatus(EmpRelCom empRelCom) {
-        return false;
+        if(empRelCom.getStatus().equals("1")){
+            empRelCom.setStatus(DataFinalStaticUtil.EMP_COM_REL_STATUS_1);
+        }else if(empRelCom.getStatus().equals("2")){
+            empRelCom.setStatus(DataFinalStaticUtil.EMP_COM_REL_STATUS_2);
+        }
+        return employeeJobService.updateRelStatus(empRelCom);
     }
 
 }

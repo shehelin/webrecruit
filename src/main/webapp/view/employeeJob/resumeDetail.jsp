@@ -3,18 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <%@ include file="../base/base.jsp" %>
+    <%@ include file="../base/import.jsp" %>
     <title>简历信息</title>
 </head>
 <link rel="stylesheet" href="<%=contextPath%>/layui-v2.4.5/layui/css/layui.css" />
 
-<body style="margin-top: 70px">
-
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>我的简历</legend>
+    <legend>简历</legend>
 </fieldset>
-<form id="form1" lay-filter="form1" class="layui-form layui-form-pane">
+<div id="form1" lay-filter="form1" class="layui-form layui-form-pane">
     <div class="layui-form-item">
 
         <div class="layui-inline">
@@ -138,11 +136,9 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <button  type="button" style="margin-left:40%" class="layui-btn" onclick="resumeController()">简历操作</button>
-        <button id="doResume"  type="button" disabled="disabled"
-                 class="layui-btn layui-btn-primary" onclick="doResumes()" >保存</button>
+        <button  type="button" style="margin-left:40%" class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel">返回</button>
     </div>
-</form>
+</div>
 
 <script type="text/javascript">
 
@@ -166,7 +162,7 @@
             var data1;
 
             $.ajax({
-                url : "<%=contextPath%>/resume/queryResume",
+                url : "<%=contextPath%>/resume/queryResumeByUserId?userId=<%=request.getParameter("userId")%>",
                 type : "post",
                 dataType:"json",
                 async:false,
@@ -184,34 +180,14 @@
             form.val('form1', data1);
 
             form.render();
+
+            form.on('submit(cancel)',function () {
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index); //关闭窗口
+            });
+
         });
 
-        function resumeController() {
-            $("[disabled]").removeAttr("disabled");
-            $("#doResume").attr('class','layui-btn');
-        }
-
-        function doResumes(){
-           var data1 = getFormData("#form1");
-            $.ajax({
-                url : "<%=contextPath%>/resume/setResume",
-                type : "post",
-                dataType:"json",
-                async:false,
-                data : data1,
-                success : function(data) {
-                    if (data.status == 200) {
-                        alert("保存成功");
-                        window.parent.location.href = "<%=contextPath%>/resume/";
-                    } else {
-                        alert("保存失败");
-                    }
-                },
-                error : function() {
-                    alert('系统异常');
-                }
-            });
-        }
 
         /**
          * 获取表单信息

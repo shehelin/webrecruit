@@ -91,22 +91,12 @@ public class EmployeeJobServiceImpl implements EmployeeJobService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean delEmployeeJob(List<EmployeeJobEntity> empList,List<EmpRelCom> empRelComList) throws Exception{
-        if(empList != null && empList.size() > 0){
-            int count = 0;
-            for(EmployeeJobEntity emp : empList){
-               count += employeeJobMapper.delEmployeeJob(emp);
-            }
-            if(count == empList.size()){
-                return delRel(empRelComList);
-            }else{
-                System.out.println("emp批量删除失败");
-                throw new Exception("emp批量删除失败");
-            }
-        }else{
-            return false;
-        }
-
+    public boolean delEmployeeJob(String empId) throws Exception{
+              int count = employeeJobMapper.delEmployeeJob(empId);
+              if(count > 0){
+                 return delRel(empId);
+               }
+              return false;
     }
 
     @Override
@@ -126,22 +116,12 @@ public class EmployeeJobServiceImpl implements EmployeeJobService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean delRel(List<EmpRelCom> empRelComList) throws Exception{
-        if(empRelComList != null && empRelComList.size() > 0){
-            int count = 0;
-            for(EmpRelCom rel : empRelComList){
-                count += empRelComMapper.delRel(rel);
-            }
-            if(count == empRelComList.size()){
-                return true;
-            }else{
-                System.out.println("rel批量删除失败");
-                throw new Exception("rel批量删除失败");
-            }
-        }else{
-            return false;
+    public boolean delRel(String empId) throws Exception{
+        int  count = empRelComMapper.delRel(empId);
+        if(count > 0){
+            return true ;
         }
-
+        return false;
     }
 
     @Override

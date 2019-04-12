@@ -85,8 +85,6 @@ public class ResumeServiceImpl {
 
         }
         return resumeMapper.queryResume(maps);
-
-
     }
 
     /**
@@ -114,5 +112,14 @@ public class ResumeServiceImpl {
         }
 
          return flag;
+    }
+
+    /**
+     * 根据Id查询简历
+     * @param maps
+     * @return
+     */
+    public List<ResumeEntity> queryResumeById(Map maps) {
+        return resumeMapper.queryResume(maps);
     }
 }

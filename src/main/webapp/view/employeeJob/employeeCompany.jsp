@@ -9,11 +9,6 @@
 </head>
 <body style="margin-top: 70px">
 
-<style type="text/css">
-    .layui-table-page {
-        position:fixed;
-    }
-</style>
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
     <legend>应聘信息</legend>
@@ -35,7 +30,6 @@
                     <option value="">请选择</option>
                     <option value="审核">审核</option>
                     <option value="通过">通过</option>
-                    <option value="拒绝">拒绝</option>
                 </select>
             </div>
         </div>
@@ -48,11 +42,13 @@
 
 <table id="demo" lay-filter="test"> </table>
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看简历</a>
+    <a class="layui-btn layui-btn-xs" lay-event="yes">接受</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="no">拒绝</a>
 </script>
 
 <script type="text/javascript">
-
+    debugger;
     layui.use(['table','form','laydate'], function() {
         var companyInfo={};
         //初始化企业信息
@@ -94,7 +90,7 @@
                 , {field: 'comName', title: '应聘单位', width: 140, sort: true}
                 , {field: 'status', title: '申请状态', width: 140, sort: true}
                 , {field: 'createTime', title: '申请时间', width: 140, sort: true}
-                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 130}
+                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
             ]]
         });
 
@@ -102,17 +98,73 @@
         table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-            var tr = obj.tr; //获得当前行 tr 的DOM对象
-
+            var tr = obj.tr; //获得当前行 tr
             if (layEvent === 'detail') { //查看
                 //todo 查看简历信息 resume
                 layer.open({
-                    title:'详细招聘信息',
+                    title:'申请者简历信息',
                     type:2,
                     area: ['750px', '600px'],
                     offset: 'auto',
                     async:false,
-                    content:'<%=contextPath%>/view/recruit/recruitDetail.jsp?recruitId='+data.recruitId
+                    content:'<%=contextPath%>/view/employeeJob/resumeDetail.jsp?userId='+data.userId
+                });
+            }else if(layEvent === 'yes'){
+                var data = obj.data; //获得当前行数据
+                data['status'] = '1';
+                layer.confirm('确定接受应聘吗？',function(){
+                    $.ajax({
+                        url: '<%=contextPath%>/employeeJob/updateRelStatus',
+                        type: "post",
+                        dataType : "json",
+                        data: data,
+                        async:false,
+                        success: function (data) {
+                            if(data){
+                                layer.alert('通过审核');
+                                table.reload('demo', {
+                                    url: '<%=contextPath%>/employeeJob/queryEmpRelCompany'
+                                    ,page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            }else{
+                                layer.alert('审核失败');
+                            }
+                        }, error: function(){
+                            layer.alert('系统异常');
+                        }
+                    });
+                });
+
+            }else if(layEvent === 'no'){
+
+                var data = obj.data; //获得当前行数据
+                data['status'] = '2';
+                layer.confirm('确定回退申请吗？',function() {
+                    $.ajax({
+                        url: '<%=contextPath%>/employeeJob/updateRelStatus',
+                        type: "post",
+                        dataType: "json",
+                        data: data,
+                        async: false,
+                        success: function (data) {
+                            if (data) {
+                                layer.alert('回退成功');
+                                table.reload('demo', {
+                                    url: '<%=contextPath%>/employeeJob/queryEmpRelCompany'
+                                    , page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            } else {
+                                layer.alert('回退失败');
+                            }
+                        },
+                        error: function () {
+                            layer.alert('系统异常');
+                        }
+                    });
                 });
             }
         });
@@ -121,7 +173,6 @@
         form.on('submit(search)',function (data) {
             var data1 = data.field;
             data1['comId'] = comId;
-            debugger;
             table.reload('demo', {
                 url: '<%=contextPath%>/employeeJob/queryEmpRelCompany'
                 ,where: data1 //设定异步数据接口的额外参数

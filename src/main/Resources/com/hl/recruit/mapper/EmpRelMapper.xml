@@ -14,10 +14,10 @@
       )
     </insert>
 
-    <delete id="delRel" parameterType="com.hl.recruit.entity.EmpRelCom">
+    <delete id="delRel" parameterType="java.lang.String">
        DELETE FROM  t_emp_rel_com
        WHERE 1=1
-       and t_rel_id = #{relId}
+       and t_emp_id = #{empId}
     </delete>
 
     <update id="updateRelStatus" parameterType="com.hl.recruit.entity.EmpRelCom">
@@ -25,7 +25,7 @@
         SET
          status = #{status}
         WHERE
-          t_rel_id = #{relId}
+          t_emp_id = #{empId}
     </update>
 
 </mapper>

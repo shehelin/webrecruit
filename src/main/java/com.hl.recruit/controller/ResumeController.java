@@ -59,4 +59,16 @@ public class ResumeController {
         map.put("data",resumeList);
         return map;
     }
+
+
+    @RequestMapping("/queryResumeByUserId")
+    @ResponseBody
+    public Map queryResumeById(String userId){
+        Map<String,String> maps = new HashMap();
+        maps.put("userId", userId);
+        List<ResumeEntity> resumeList = resumeService.queryResumeById(maps);
+        Map<String,Object> map = new HashMap();
+        map.put("data",resumeList);
+        return map;
+    }
 }

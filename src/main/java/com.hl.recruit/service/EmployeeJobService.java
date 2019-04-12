@@ -56,10 +56,10 @@ public interface EmployeeJobService {
 
     /**
      * 删除求职信息
-     * @param empList
+     * @param empId
      * @return
      */
-    boolean delEmployeeJob(List<EmployeeJobEntity> empList, List<EmpRelCom> empRelComList) throws Exception;
+    boolean delEmployeeJob(String empId) throws Exception;
 
     /**
      * 修改求职信息
@@ -71,10 +71,10 @@ public interface EmployeeJobService {
 
     /**
      * 删除关联
-     * @param empRelComList
+     * @param empId
      * @return
      */
-    boolean delRel(List<EmpRelCom> empRelComList) throws Exception;
+    boolean delRel(String empId) throws Exception;
 
     /**
      * 修改关联-审核-状态
