@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.EmpRelComMapper">
+
+    <insert id="addRel" parameterType="com.hl.recruit.entity.EmpRelCom">
+      INSERT INTO t_emp_rel_com
+      (
+      t_rel_id, t_emp_id, t_com_id, status
+      )VALUES (
+          #{relId},
+          #{empId},
+          #{comId},
+          #{status}
+      )
+    </insert>
+
+    <delete id="delRel" parameterType="com.hl.recruit.entity.EmpRelCom">
+       DELETE FROM  t_emp_rel_com
+       WHERE 1=1
+       and t_rel_id = #{relId}
+    </delete>
+
+    <update id="updateRelStatus" parameterType="com.hl.recruit.entity.EmpRelCom">
+        UPDATE t_emp_rel_com
+        SET
+         status = #{status}
+        WHERE
+          t_rel_id = #{relId}
+    </update>
+
+</mapper>

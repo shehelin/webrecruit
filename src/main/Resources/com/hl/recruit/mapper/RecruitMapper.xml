@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.RecruitMapper">
+    <resultMap id="recruitResultMap" type="com.hl.recruit.entity.RecruitEntity">
+        <result property="recruitId" column="t_recruit_id" jdbcType="VARCHAR"/>
+        <result property="comId" column="t_com_id" jdbcType="VARCHAR" />
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="jobName" column="t_job_name" jdbcType="VARCHAR" />
+        <result property="jobNumber" column="t_job_number" jdbcType="INTEGER" />
+        <result property="jobArea" column="t_job_area" jdbcType="INTEGER" />
+        <result property="recruitCondition" column="t_recruit_condition" jdbcType="VARCHAR" />
+        <result property="minSalary" column="t_min_salary" jdbcType="INTEGER" />
+        <result property="maxSalary" column="t_max_salary" jdbcType="INTEGER" />
+        <result property="beginTime" column="t_begin_time" jdbcType="DATE" />
+        <result property="endTime" column="t_end_time" jdbcType="DATE" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.hl.recruit.entity.UserEntity" >
+        <result property="userId" column="t_user_id"  jdbcType="VARCHAR"/>
+        <result property="userName" column="t_user_name" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="status" jdbcType="VARCHAR"/>
+        <result property="realName" column="t_real_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+        <result property="email" column="t_email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="CompanyResultMap" type="com.hl.recruit.entity.CompanyEntity">
+        <result property="comId" column="t_com_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="comName" column="t_com_name" jdbcType="VARCHAR" />
+        <result property="comType" column="t_com_type" jdbcType="VARCHAR" />
+        <result property="comInfo" column="t_com_info" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="comAddress" column="t_com_address" jdbcType="VARCHAR" />
+        <result property="comTel" column="t_com_tel" jdbcType="VARCHAR" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="UserComResultMap" type="com.hl.recruit.dto.UserComDto">
+        <result property="recruitId" column="t_recruit_id" jdbcType="VARCHAR"/>
+        <result property="comId" column="t_com_id" jdbcType="VARCHAR" />
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="comName" column="t_com_name" jdbcType="VARCHAR" />
+        <result property="comType" column="t_com_type" jdbcType="VARCHAR" />
+        <result property="comInfo" column="t_com_info" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="comAddress" column="t_com_address" jdbcType="VARCHAR" />
+        <result property="comTel" column="t_com_tel" jdbcType="VARCHAR" />
+        <result property="jobName" column="t_job_name" jdbcType="VARCHAR" />
+        <result property="jobNumber" column="t_job_number" jdbcType="INTEGER" />
+        <result property="jobArea" column="t_job_area" jdbcType="INTEGER" />
+        <result property="recruitCondition" column="t_recruit_condition" jdbcType="VARCHAR" />
+        <result property="minSalary" column="t_min_salary" jdbcType="INTEGER" />
+        <result property="maxSalary" column="t_max_salary" jdbcType="INTEGER" />
+        <result property="beginTime" column="t_begin_time" jdbcType="DATE" />
+        <result property="endTime" column="t_end_time" jdbcType="DATE" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+        <result property="jobProvince" column="t_job_province" jdbcType="VARCHAR" />
+        <result property="jobCity" column="t_job_city" jdbcType="VARCHAR" />
+        <result property="jobTown" column="t_job_town" jdbcType="VARCHAR" />
+        <result property="realName" column="t_real_Name" jdbcType="VARCHAR"/>
+        <result property="email" column="t_email" jdbcType="VARCHAR"/>
+        <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+
+    </resultMap>
+
+    <insert id="addRecruit" parameterType="com.hl.recruit.entity.RecruitEntity">
+      INSERT INTO t_recruit
+      (
+      t_recruit_id,t_com_id,t_user_id,t_job_name,t_job_number,t_job_area,
+      t_recruit_condition, t_min_salary,t_max_salary,
+      t_begin_time, t_end_time, t_create_time,t_job_province,t_job_city,t_job_town
+      )VALUES (
+          #{recruitId},
+          #{comId},
+          #{userId},
+          #{jobName},
+          #{jobNumber},
+          #{jobArea},
+          #{recruitCondition},
+          #{minSalary},
+          #{maxSalary},
+          #{beginTime},
+          #{endTime},
+          #{createTime},
+          #{jobProvince},
+          #{jobCity},
+          #{jobTown}
+      )
+    </insert>
+
+    <delete id="delRecruit" parameterType="com.hl.recruit.entity.RecruitEntity">
+       DELETE FROM  t_recruit
+       WHERE 1=1
+       and t_com_id = #{comId}
+       and t_recruit_id = #{recruitId}
+    </delete>
+
+    <update id="updateRecruit" parameterType="com.hl.recruit.entity.RecruitEntity">
+        UPDATE t_recruit
+        SET
+        t_job_name = #{jobName},
+        t_job_number = #{jobNumber},
+        t_job_area = #{jobArea},
+        t_job_province = #{jobProvince},
+        t_job_city = #{jobCity},
+        t_job_town = #{jobTown},
+        t_recruit_condition = #{recruitCondition},
+        t_min_salary = #{minSalary},
+        t_max_salary = #{maxSalary},
+        t_begin_time = #{beginTime},
+        t_end_time = #{endTime}
+        WHERE
+          t_recruit_id = #{recruitId}
+        AND t_user_id = #{userId}
+    </update>
+
+    <select id ="queryRecruit" parameterType="java.util.Map" resultMap="UserComResultMap">
+      SELECT t_recruit_id,r.t_com_id,c.t_com_name,r.t_job_name,
+        r.t_job_number,r.t_job_area,r.t_min_salary,r.t_job_province,r.t_job_city,r.t_job_town,
+        r.t_max_salary,r.t_begin_time,r.t_end_time
+        from t_recruit r
+      LEFT JOIN t_company c on r.t_user_id = c.t_user_id
+       WHERE 1=1
+        <if test="jobName != null &amp;&amp; jobName != ''">
+            AND r.t_job_name LIKE CONCAT('%',#{jobName},'%')
+        </if>
+        <if test="jobArea != null &amp;&amp; jobArea != ''">
+            AND r.t_job_area LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_province LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_city LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_town LIKE CONCAT('%',#{jobArea},'%')
+        </if>
+        <if test="enjoySalary != null &amp;&amp; enjoySalary != ''">
+            AND r.t_min_salary &lt;= #{enjoySalary}
+            AND r.t_max_salary >= #{enjoySalary}
+        </if>
+        <if test="beginTime != null &amp;&amp; beginTime != '' ">
+            AND r.t_begin_time &lt;= #{beginTime}
+            AND r.t_end_time >= #{beginTime}
+        </if>
+        <if test="endTime != null &amp;&amp; endTime != ''">
+            AND r.t_end_time >= #{endTime}
+            AND r.t_begin_time &lt;=#{endTime}
+        </if>
+        <if test="userId != null &amp;&amp; userId != '' ">
+            AND r.t_user_id = #{userId}
+        </if>
+    </select>
+
+    <select id="queryRecruitDetail" parameterType="java.util.Map" resultMap="UserComResultMap">
+        SELECT
+          r.t_recruit_id,c.t_com_id,c.t_com_name,c.t_com_info,c.t_com_address,c.t_com_tel,c.t_com_type,
+          r.t_job_name,r.t_job_number,r.t_job_area,
+          r.t_recruit_condition,r.t_min_salary,r.t_max_salary,
+          r.t_begin_time,r.t_end_time,r.t_job_province,r.t_job_city,r.t_job_town,u.t_user_id,
+          u.t_real_name,u.t_phone,u.t_email
+        FROM
+        t_recruit r
+        INNER JOIN t_company c ON r.t_com_id = c.t_com_id AND r.t_user_id=c.t_user_id
+        INNER JOIN t_user u ON r.t_user_id = u.t_user_id
+        WHERE r.t_recruit_id = #{recruitId}
+    </select>
+
+    <select id="queryRecruitCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+      SELECT count(1) FROM t_recruit
+      WHERE 1=1
+      <if test="userId != null &amp;&amp; userId != '' ">
+          AND t_user_id = #{userId}
+      </if>
+    </select>
+</mapper>

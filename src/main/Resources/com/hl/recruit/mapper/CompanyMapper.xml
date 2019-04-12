@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.CompanyMapper">
+    <resultMap id="CompanyResultMap" type="com.hl.recruit.entity.CompanyEntity">
+        <id property="comId" column="t_com_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="comName" column="t_com_name" jdbcType="VARCHAR" />
+        <result property="comType" column="t_com_type" jdbcType="VARCHAR" />
+        <result property="comInfo" column="t_com_info" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="comAddress" column="t_com_address" jdbcType="VARCHAR" />
+        <result property="comTel" column="t_com_tel" jdbcType="VARCHAR" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.hl.recruit.entity.UserEntity" >
+        <id property="userId" column="t_user_id"  jdbcType="VARCHAR"/>
+        <result property="userName" column="t_user_name" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="status" jdbcType="VARCHAR"/>
+        <result property="realName" column="t_real_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+        <result property="email" column="t_email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="UserComResultMap" type="com.hl.recruit.dto.UserComDto">
+        <association property="companyEntity" column="t_com_id" resultMap="CompanyResultMap" />
+        <association property="userEntity" column="t_user_id" resultMap="userResultMap" />
+    </resultMap>
+
+    <insert id="addCompany" parameterType="com.hl.recruit.entity.CompanyEntity">
+      INSERT INTO t_company
+      (
+        t_com_id,
+        t_com_name,
+        t_com_type,
+        t_com_info,
+        t_remark,
+        t_com_address,
+        t_user_id,
+        t_com_tel,
+        t_create_time
+      )VALUES (
+          #{comId},
+          #{comName},
+          #{comType},
+          #{comInfo},
+          #{remark},
+          #{comAddress},
+          #{userId},
+          #{comTel},
+          #{createTime}
+      )
+    </insert>
+    
+    <update id="updateCompanyById" parameterType="com.hl.recruit.entity.CompanyEntity">
+        UPDATE t_company
+        SET
+        t_com_id =  #{comId},
+        t_com_name = #{comName},
+        t_com_type = #{comType},
+        t_com_info = #{comInfo},
+        t_remark = #{remark},
+        t_com_address = #{comAddress},
+        t_com_tel = #{comTel}
+        WHERE
+          t_user_id = #{userId}
+    </update>
+
+    <delete id="deleteCompanyById" parameterType="com.hl.recruit.entity.CompanyEntity">
+       DELETE FROM  t_company
+       WHERE t_com_id = #{comId}
+       AND t_user_id = #{userId}
+    </delete>
+
+    <select id="queryAllCompany" resultMap="CompanyResultMap">
+        SELECT   t_com_id,t_com_name,t_com_type,
+                t_com_info,t_remark,t_com_address,
+              t_user_id,t_com_tel,t_create_time
+        FROM t_company
+    </select>
+
+    <select id ="queryPageCompany" parameterType="java.util.Map" resultMap="CompanyResultMap">
+       SELECT
+        t_com_id,
+        t_com_name,t_com_type,
+        t_com_info,t_remark,t_com_address,
+        t_com_tel,t_create_time
+       FROM t_company
+       WHERE 1=1
+        <if test="comId != null &amp;&amp; comId != ''">
+            AND t_com_id LIKE CONCAT('%',#{comId},'%')
+        </if>
+        <if test="userId != null &amp;&amp; userId != ''">
+            AND t_user_id LIKE CONCAT('%',#{userId},'%')
+        </if>
+        <if test="comType != null &amp;&amp; comType != ''">
+            AND t_com_type LIKE CONCAT('%',#{comType},'%')
+        </if>
+       ORDER BY t_com_id
+    </select>
+
+    <select id="queryUserComDetail" parameterType="java.util.Map" resultMap="UserComResultMap">
+        SELECT
+        c.t_com_id,
+        c.t_com_name,c.t_com_type,
+        c.t_com_info,c.t_remark,c.t_com_address,
+        c.t_com_tel,c.t_create_time,
+        u.t_user_id,
+        u.t_real_name,u.status,u.t_email,u.t_phone
+        FROM t_company c
+        LEFT JOIN t_user u ON c.t_user_id = u.t_user_id
+        WHERE 1=1
+        <if test="userId != null &amp;&amp; userId != ''">
+             AND c.t_user_id = #{userId}
+        </if>
+        GROUP
+        BY c.t_user_id,c.t_com_id
+    </select>
+
+    <select id="queryCompanyCount" resultType="java.lang.Integer">
+      SELECT count(1) FROM t_company
+    </select>
+
+    <select id="queryCompanyById" parameterType="java.util.Map" resultMap="CompanyResultMap">
+      SELECT t_com_id,t_user_id,
+        t_com_name,t_com_type,
+        t_com_info,t_remark,t_com_address,
+        t_com_tel,t_create_time
+        FROM t_company
+        WHERE
+        t_user_id = #{userId}
+    </select>
+</mapper>

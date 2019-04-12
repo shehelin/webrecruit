@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.ResumeMapper">
+    <resultMap id="resumeResultMap" type="com.hl.recruit.entity.ResumeEntity">
+        <id property="resumeId" column="t_resume_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="fileId" column="t_file_id" jdbcType="VARCHAR" />
+        <result property="name" column="t_name" jdbcType="VARCHAR" />
+        <result property="sex" column="t_sex" jdbcType="VARCHAR" />
+        <result property="nation" column="t_nation" jdbcType="VARCHAR" />
+        <result property="birthDate" column="t_birth_date" jdbcType="DATE" />
+        <result property="birthArea" column="t_birth_area" jdbcType="VARCHAR" />
+        <result property="localArea" column="t_local_area" jdbcType="VARCHAR" />
+        <result property="graduation" column="t_graduation" jdbcType="VARCHAR" />
+        <result property="educationLevel" column="t_education_level" jdbcType="VARCHAR" />
+        <result property="major" column="t_major" jdbcType="VARCHAR" />
+        <result property="politicStatus" column="t_politics_status" jdbcType="VARCHAR" />
+        <result property="phone" column="t_phone" jdbcType="VARCHAR" />
+        <result property="email" column="t_email" jdbcType="VARCHAR" />
+        <result property="jobName" column="t_job_name" jdbcType="VARCHAR" />
+        <result property="skill" column="t_skill" jdbcType="VARCHAR" />
+        <result property="experience" column="t_experience" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.hl.recruit.entity.UserEntity" >
+        <id property="userId" column="t_user_id"  jdbcType="VARCHAR"/>
+        <result property="userName" column="t_user_name" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="status" jdbcType="VARCHAR"/>
+        <result property="realName" column="t_real_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+        <result property="email" column="t_email" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addResume" parameterType="com.hl.recruit.entity.ResumeEntity">
+      INSERT INTO t_resume
+      (
+        t_resume_id,
+        t_user_id,
+        t_name,
+        t_sex,
+        t_nation,
+        t_birth_date,
+        t_birth_area,
+        t_local_area,
+        t_graduation,
+        t_education_level,
+        t_politics_status,
+        t_major,
+        t_phone,
+        t_email,
+        t_job_name,
+        t_skill,
+        t_experience
+      )VALUES (
+          #{resumeId},
+          #{userId},
+          #{name},
+          #{sex},
+          #{nation},
+          #{birthDate},
+          #{birthArea},
+          #{localArea},
+          #{graduation},
+          #{educationLevel},
+          #{politicStatus},
+          #{major},
+          #{phone},
+          #{email},
+          #{jobName},
+          #{skill},
+          #{experience}
+      )
+    </insert>
+
+    <delete id="delResume" parameterType="com.hl.recruit.entity.ResumeEntity">
+       DELETE FROM  t_resume
+       WHERE t_user_id = #{userId}
+    </delete>
+
+    <update id="updateResume" parameterType="com.hl.recruit.entity.ResumeEntity">
+        UPDATE t_resume
+        SET
+        t_name =#{name},
+        t_sex =#{sex},
+        t_nation =#{nation},
+        t_birth_date =#{birthDate},
+        t_birth_area =#{birthArea},
+        t_local_area =#{localArea},
+        t_graduation =#{graduation},
+        t_politics_status =#{politicStatus},
+        t_education_level =#{educationLevel},
+        t_major =#{major},
+        t_phone =#{phone},
+        t_email =#{email},
+        t_job_name =#{jobName},
+        t_skill =#{skill},
+        t_experience =#{experience}
+        WHERE
+          t_resume_id = #{resumeId}
+        AND t_user_id = #{userId}
+    </update>
+
+
+
+    <select id ="queryResume" parameterType="java.util.Map" resultMap="resumeResultMap">
+       SELECT
+        a.t_resume_id,
+        a.t_user_id,
+        a.t_name,
+        a.t_sex,
+        a.t_nation,
+        a.t_birth_date,
+        a.t_birth_area,
+        a.t_local_area,
+        a.t_graduation,
+        a.t_education_level,
+        a.t_politics_status,
+        a.t_major,
+        a.t_phone,
+        a.t_email,
+        a.t_job_name,
+        a.t_skill,
+        a.t_experience
+        FROM t_resume a
+       INNER JOIN t_user u ON a.t_user_id = u.t_user_id
+       WHERE 1=1
+        <if test="userId != null &amp;&amp; userId != ''">
+            AND a.t_user_id = #{userId}
+        </if>
+    </select>
+
+    <select id="queryResumeCount" resultType="java.lang.Integer">
+      SELECT count(1) FROM t_resume;
+    </select>
+
+    <select id="queryResumeCountById" parameterType="java.lang.String" resultType="java.lang.Integer">
+      SELECT count(1) FROM t_resume
+      where t_user_id = #{userId};
+    </select>
+</mapper>

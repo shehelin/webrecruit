@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.UserMapper">
+
+    <resultMap id="userResultMap" type="com.hl.recruit.entity.UserEntity" >
+        <id property="userId" column="t_user_id"  jdbcType="VARCHAR"/>
+        <result property="userName" column="t_user_name" jdbcType="VARCHAR"/>
+        <result property="pwd" column="t_pwd" jdbcType="VARCHAR"/>
+        <result property="userStatus" column="status" jdbcType="VARCHAR"/>
+        <result property="realName" column="t_real_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+        <result property="sex" column="t_sex" jdbcType="VARCHAR"/>
+        <result property="email" column="t_email" jdbcType="VARCHAR"/>
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询user -->
+    <select id="queryUserById" resultMap="userResultMap" parameterType="com.hl.recruit.entity.UserEntity">
+      SELECT
+            t_user_id,t_user_name,t_real_name,t_pwd,t_phone,status,t_sex,
+            t_email,t_create_time
+      FROM
+        t_user
+      WHERE
+        t_user_id = #{userId}
+    </select>
+
+    <select id="login" resultMap="userResultMap" parameterType="com.hl.recruit.entity.UserEntity">
+      SELECT
+            t_user_id,t_user_name,t_real_name,t_pwd,t_phone,status,t_sex,
+            t_email,t_create_time
+      FROM
+        t_user
+      WHERE
+        t_user_id = #{userId} AND t_pwd = #{pwd} AND status = #{userStatus}
+    </select>
+
+    <insert id="insertUser" parameterType="com.hl.recruit.entity.UserEntity">
+        INSERT INTO t_user(t_user_id,t_user_name,t_real_name,t_pwd,t_phone,status,t_sex,
+            t_email,t_create_time)
+            VALUES (
+            #{userId},
+            #{userName},
+            #{realName},
+            #{pwd},
+            #{phone},
+            #{userStatus},
+            #{sex},
+            #{email},
+            #{createTime}
+            )
+    </insert>
+
+    <update id="updateUserById" parameterType="com.hl.recruit.entity.UserEntity">
+        UPDATE t_user
+        SET
+            t_user_name = #{userName},
+            t_real_name = #{realName},
+            t_phone = #{phone},
+            t_sex = #{sex},
+            t_email = #{email}
+        WHERE
+        t_user_id = #{userId}
+    </update>
+
+    <!-- 删除user通过id和密码 -->
+    <delete id="deleteUserById" parameterType = "com.hl.recruit.entity.UserEntity">
+        DELETE FROM t_user WHERE  t_user_id = #{userId} AND t_pwd = #{pwd}
+    </delete>
+
+    <!-- 修改密码 -->
+    <update id="updatePwd" parameterType="com.hl.recruit.entity.UserEntity">
+        UPDATE t_user
+        SET t_pwd = #{pwd}
+        WHERE t_user_id = #{userId}
+    </update>
+
+    <select id="queryCountUser" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM t_user
+    </select>
+</mapper>

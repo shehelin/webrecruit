@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.EmployeeJobMapper">
+    <resultMap id="EmpResultMap" type="com.hl.recruit.entity.EmployeeJobEntity">
+        <id property="empId" column="t_emp_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="empName" column="t_emp_name" jdbcType="VARCHAR" />
+        <result property="empJob" column="t_emp_job" jdbcType="VARCHAR" />
+        <result property="empSalary" column="t_emp_salary" jdbcType="VARCHAR" />
+        <result property="empArea" column="t_emp_area" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="CompanyResultMap" type="com.hl.recruit.entity.CompanyEntity">
+        <id property="comId" column="t_com_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="comName" column="t_com_name" jdbcType="VARCHAR" />
+        <result property="comType" column="t_com_type" jdbcType="VARCHAR" />
+        <result property="comInfo" column="t_com_info" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="comAddress" column="t_com_address" jdbcType="VARCHAR" />
+        <result property="comTel" column="t_com_tel" jdbcType="VARCHAR" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <resultMap id="EmpRelComDtoResultMap" type="com.hl.recruit.dto.EmpRelComDto">
+        <result property="empId" column="t_emp_id" jdbcType="VARCHAR"/>
+        <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
+        <result property="empName" column="t_emp_name" jdbcType="VARCHAR" />
+        <result property="empJob" column="t_emp_job" jdbcType="VARCHAR" />
+        <result property="empSalary" column="t_emp_salary" jdbcType="VARCHAR" />
+        <result property="empArea" column="t_emp_area" jdbcType="VARCHAR" />
+        <result property="remark" column="t_remark" jdbcType="VARCHAR" />
+        <result property="comId" column="t_com_id" jdbcType="VARCHAR"/>
+        <result property="comName" column="t_com_name" jdbcType="VARCHAR" />
+        <result property="status" column="status" jdbcType="VARCHAR" />
+        <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="addEmployeeJob" parameterType="com.hl.recruit.entity.EmployeeJobEntity">
+      INSERT INTO t_emp
+      (
+        t_emp_id,
+        t_user_id,
+        t_emp_name,
+        t_emp_job,
+        t_emp_salary,
+        t_emp_area,
+        t_remark,
+        t_create_time
+      )VALUES (
+          #{empId},
+          #{userId},
+          #{empName},
+          #{empJob},
+          #{empSalary},
+          #{empArea},
+          #{remark},
+          #{createTime}
+      )
+    </insert>
+    
+    <update id="updateEmployeeJob" parameterType="com.hl.recruit.entity.EmployeeJobEntity">
+        UPDATE t_emp
+        SET
+        t_emp_name = #{empName},
+        t_emp_job = #{empJob},
+        t_emp_salary = #{empSalary},
+        t_emp_area = #{empArea},
+        t_remark = #{remark}
+        WHERE
+          t_user_id = #{userId}
+        AND t_emp_id = #{empId}
+    </update>
+
+    <delete id="delEmployeeJob" parameterType="com.hl.recruit.entity.EmployeeJobEntity">
+       DELETE FROM  t_emp
+       WHERE t_emp_id = #{empId}
+       AND t_user_id = #{userId}
+    </delete>
+
+    <select id ="queryEmployeeJob" parameterType="java.util.Map" resultMap="EmpRelComDtoResultMap">
+        select
+        a.t_emp_id,
+        a.t_user_id,
+        a.t_emp_name,
+        a.t_emp_job,
+        a.t_emp_salary,
+        a.t_emp_area,
+        a.t_remark,
+        c.t_com_id,
+        c.t_com_name,
+        b.status,
+        a.t_create_time
+        from t_emp a
+        LEFT JOIN t_emp_rel_com b ON a.t_emp_id = b.t_emp_id
+        LEFT JOIN t_company c on b.t_com_id = c.t_com_id
+        WHERE 1=1
+        AND a.t_user_id = #{userId}
+        <if test="status !=null &amp;&amp; status != ''">
+            AND b.status = #{status}
+        </if>
+        <if test="empJob != null &amp;&amp; empJob != ''">
+            AND a.t_emp_job LIKE CONCAT('%',#{empJob},'%')
+        </if>
+        <if test="empArea != null &amp;&amp; empArea != ''">
+            AND a.t_emp_area LIKE CONCAT('%',#{empArea},'%')
+        </if>
+        <if test="empSalary != null &amp;&amp; empSalary != ''">
+            AND a.t_emp_salary LIKE CONCAT('%',#{empSalary},'%')
+        </if>
+        ORDER BY t_create_time DESC
+    </select>
+
+    <select id ="queryEmpRelCompany" parameterType="java.util.Map" resultMap="EmpRelComDtoResultMap">
+        select
+        a.t_emp_id,
+        a.t_user_id,
+        a.t_emp_name,
+        a.t_emp_job,
+        a.t_emp_salary,
+        a.t_emp_area,
+        a.t_remark,
+        c.t_com_id,
+        c.t_com_name,
+        b.status,
+        a.t_create_time
+        from t_emp a
+        LEFT JOIN t_emp_rel_com b ON a.t_emp_id = b.t_emp_id
+        LEFT JOIN t_company c on b.t_com_id = c.t_com_id
+        WHERE 1=1
+        AND b.status in('审核','通过')
+        <if test="comId !=null &amp;&amp; comId != ''">
+          AND c.t_com_id = #{comId}
+        </if>
+        <if test="status !=null &amp;&amp; status != ''">
+            AND b.status = #{status}
+        </if>
+        <if test="empJob != null &amp;&amp; empJob != ''">
+            AND a.t_emp_job LIKE CONCAT('%',#{empJob},'%')
+        </if>
+        <if test="empArea != null &amp;&amp; empArea != ''">
+            AND a.t_emp_area LIKE CONCAT('%',#{empArea},'%')
+        </if>
+        <if test="empSalary != null &amp;&amp; empSalary != ''">
+            AND a.t_emp_salary LIKE CONCAT('%',#{empSalary},'%')
+        </if>
+        ORDER BY t_create_time DESC
+    </select>
+
+
+    <select id="queryEmpCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+      SELECT count(1) FROM t_emp e
+      INNER JOIN t_emp_rel_com rel on e.t_emp_id = rel.t_emp_id
+      WHERE 1=1
+          <if test="userId != null &amp;&amp; userId != '' ">
+            AND e.t_user_id = #{userId}
+          </if>
+          <if test="comId != null &amp;&amp; comId != '' ">
+            AND rel.t_com_id = #{comId}
+          </if>
+    </select>
+</mapper>

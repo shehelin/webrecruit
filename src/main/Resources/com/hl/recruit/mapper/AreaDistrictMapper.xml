@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hl.recruit.dao.AreaDistrictMapper">
+    <resultMap id="areaResultMap" type="com.hl.recruit.entity.AreaDistrict">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="pId" column="pid" jdbcType="INTEGER"/>
+        <result property="district" column="district" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="queryProvince" resultType="com.hl.recruit.entity.AreaDistrict">
+      select * from rc_district
+      where level = 1
+    </select>
+
+    <select id="queryCity" parameterType="java.util.Map" resultType="com.hl.recruit.entity.AreaDistrict">
+      select * from rc_district
+      where level = 2
+        and pid = #{pid}
+    </select>
+
+    <select id="queryTown" parameterType="java.util.Map" resultType="com.hl.recruit.entity.AreaDistrict">
+      select * from rc_district
+      where level = 3
+        and pid = #{pid}
+    </select>
+</mapper>
