@@ -31,7 +31,6 @@ body {
 			alert("请输入密码");
 			return;
 		}
-		debugger;
 		$.ajax({
 			url : "<%=root%>/doAdminLogin",
 			type : "post",

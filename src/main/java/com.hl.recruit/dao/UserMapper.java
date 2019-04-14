@@ -56,4 +56,11 @@ public interface UserMapper {
      * @return
      */
     int deleteUserById(UserEntity user);
+
+    /**
+     * 用户信息
+     * @param userEntity
+     * @return
+     */
+    UserEntity queryUser(UserEntity userEntity);
 }

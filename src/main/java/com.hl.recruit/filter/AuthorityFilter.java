@@ -28,22 +28,21 @@ public class AuthorityFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		
+
 		//获取uri
 		String uri = httpRequest.getRequestURI();
-		System.out.println("uri--------------" + uri);
 		String contentPath = httpRequest.getContextPath();
-		System.out.println("contentPath----------" + contentPath);
 
-		boolean flag = uri.equals(contentPath+"/") || uri.contains("index")
+		boolean flag = uri.equals(contentPath + "/") || uri.contains("index")
 				|| uri.contains("register")
 				|| uri.contains("doRegister")
 				|| uri.contains("login")
+				|| uri.contains("/admin")
 				|| uri.contains("doLogin")
 				|| uri.contains("doAdminLogin")
+				|| uri.contains("queryUserById")
 				|| (uri.contains("/recruit") && !uri.endsWith("/recruit/my"))
-				|| (uri.contains("/employeeJob")&&
-                !(uri.endsWith("/employeeJob/employeeUser")
+				|| (uri.contains("/employeeJob")&& !(uri.endsWith("/employeeJob/employeeUser")
                         ||uri.endsWith("/employeeJob/employeeCompany")
                         ||uri.contains("/employeeJob/addEmployeeView")))
 				|| (uri.contains("/company") && !uri.endsWith("/company/"))

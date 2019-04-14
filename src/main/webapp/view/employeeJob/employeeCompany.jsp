@@ -48,7 +48,6 @@
 </script>
 
 <script type="text/javascript">
-    debugger;
     layui.use(['table','form','laydate'], function() {
         var companyInfo={};
         //初始化企业信息

@@ -1,6 +1,7 @@
 package com.hl.recruit.service;
 
 
+import com.hl.recruit.dao.UserMapper;
 import com.hl.recruit.entity.UserEntity;
 
 import java.util.List;
@@ -54,4 +55,11 @@ public interface UserService {
      * @return
      */
     boolean deleteUserById(UserEntity user);
+
+    /**
+     * query
+     * @param user
+     * @return
+     */
+    UserEntity queryUser(UserEntity user);
 }

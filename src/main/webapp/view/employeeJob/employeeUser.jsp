@@ -148,8 +148,6 @@
             var Town =$("#queryTown").find("option:selected").text();
             var area = Province+City+Town;
             data1['empArea'] = area;
-            console.log(data1);
-            debugger;
             table.reload('demo', {
                 url: '<%=contextPath%>/employeeJob/queryEmployeeJob'
                 ,where: data1 //设定异步数据接口的额外参数

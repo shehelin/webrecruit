@@ -114,7 +114,6 @@
                 if(data.length==0){
                     return;
                 }
-                debugger;
                 data1 = JSON.parse(JSON.stringify(data[0]));
             },
             error : function() {

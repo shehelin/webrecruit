@@ -8,9 +8,11 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -49,10 +51,10 @@ public class AdminController {
 	 * 进入数据录入页面
 	 * @return
 	 */
-	@RequestMapping(value = "/goEmps")
+	@RequestMapping(value = "/userManager")
 	public ModelAndView goEmps() {
 		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/emps");
+		view.setViewName("admin/userManager");
 		return view;
 	}
 	/**
@@ -109,12 +111,20 @@ public class AdminController {
 //
 //		return userService.findAllCompanys(pager, param);
 //	}
-//	@ResponseBody
-//	@RequestMapping(value="findEmpList")
-//	public JqueryDto findEmpList(HttpServletRequest request, HttpServletResponse response, String param){
-//
-////	Company  c=companyService.findByUid(user.getId());
-//
+
+	/**
+	 * 用户信息管理-TODO-分页
+	 * @param userEntity
+	 * @return
+	 */
+	@RequestMapping("/findUser")
+	@ResponseBody
+	public UserEntity findUser(UserEntity userEntity) {
+		return userService.queryUser(userEntity);
+	}
+
+
+
 //	//查询分数LIST
 //	Pager	pager = PagerUtils.getPager(request);
 //

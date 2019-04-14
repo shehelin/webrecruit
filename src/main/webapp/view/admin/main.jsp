@@ -59,11 +59,9 @@ A:hover {
 </style>
 		<script type="text/javascript">
 function logout() {
-	window.location.href = "/webservicerecruit";
+	window.location.href = "<%=root%>/logout";
 }
-function first() {
-	$('#tabs').tabs('select', 0);
-}
+
 function currentTime() {
 	var d = new Date(), str = '';
 	str += d.getFullYear() + '年';
@@ -84,10 +82,10 @@ setInterval(function() {
 		<!-- 正上方panel -->
 		<div region="north" style="padding: 10px;">
 			<div class="top">
-				<img src="/recruit/common/images/sheep.jpeg"
+				<img src="<%=root%>/common/images/sheep.jpg"
 					style="width: 35px; height: 40px;" />
 				<div class="top_title">
-					<span>欢迎使用人员招聘管理系统后台</span>
+					<span>您好，管理员。这里是在线招聘系统后台管理</span>
 				</div>
 				<div>
 					<div id="time" class="time">
@@ -96,9 +94,7 @@ setInterval(function() {
 				</div>
 				<div class="exit">
 					<a href="javascript:void(0);" onclick="logout();"> <img
-							src="/recruit/common/images/exit.jpg" /> <span>退出</span> </a>
-					<a href="javascript:void(0);" onclick="first();"> <img
-							src="/recruit/common/images/index.jpg" /> <span>返回首页</span> </a>
+							src="<%=root%>/common/images/exit.jpg" /> <span>退出</span> </a>
 				</div>
 			</div>
 		</div>
@@ -111,7 +107,7 @@ setInterval(function() {
 					<ul>
 						<li>
 							<a
-								href="javascript:addTab('tabId_loginInfo','求职者管理','<%=root%>/admin/goEmps');">求职者管理</a>
+								href="javascript:addTab('tabId_loginInfo','用户管理','<%=root%>/admin/userManager');">用户管理</a>
 						</li>
 						<li>
 							<a
@@ -120,15 +116,15 @@ setInterval(function() {
 					</ul>
 				</div>
 				
-								<div title="信息监督" selected="false">
+								<div title="信息管理" selected="false">
 					<ul>
 						<li>
 							<a
-								href="javascript:addTab('tabId_loginInfo','职位监督','<%=root%>/admin/goJobs');">职位监督</a>
+								href="javascript:addTab('tabId_loginInfo','企业信息管理','<%=root%>/admin/goJobs');">职位监督</a>
 						</li>
 						<li>
 							<a
-								href="javascript:addTab('tabId_privilege','论坛监督','<%=root%>/admin/goInfos');">论坛监督</a>
+								href="javascript:addTab('tabId_privilege','简历信息管理','<%=root%>/admin/goInfos');">论坛监督</a>
 						</li>
 					</ul>
 				</div>
@@ -142,8 +138,7 @@ setInterval(function() {
 				<div title="欢迎页" style="padding: 20px; overflow: hidden;">
 					<div style="margin-top: 0px;">
 						<h3>
-							<img alt="" src="/recruit/common/images/fox3.jpg"
-								style="width: 1100px; height: 400px;">
+							欢迎----
 						</h3>
 					</div>
 				</div>

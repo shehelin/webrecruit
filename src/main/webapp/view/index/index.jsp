@@ -242,7 +242,6 @@
 
 		//区域市事件
         form.on('select(queryProvince)', function(data){
-            debugger;
             $.ajax({
                 url: '<%=contextPath%>/areaDict/queryCity',
                 type: "post",

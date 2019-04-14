@@ -21,8 +21,11 @@
             t_email,t_create_time
       FROM
         t_user
-      WHERE
-        t_user_id = #{userId}
+      WHERE 1=1
+      <if test="userId != null &amp;&amp; userId != '' ">
+        AND  t_user_id = #{userId}
+      </if>
+
     </select>
 
     <select id="login" resultMap="userResultMap" parameterType="com.hl.recruit.entity.UserEntity">
@@ -77,5 +80,14 @@
 
     <select id="queryCountUser" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM t_user
+    </select>
+
+    <select id="queryUser" resultMap="userResultMap" parameterType="com.hl.recruit.entity.UserEntity">
+        SELECT
+        t_user_id,t_user_name,t_real_name,t_pwd,t_phone,status,t_sex,
+            t_email,t_create_time
+        FROM
+        t_user
+        WHERE 1=1
     </select>
 </mapper>

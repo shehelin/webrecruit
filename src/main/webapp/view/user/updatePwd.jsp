@@ -69,7 +69,6 @@
 
     function doUpdate(){
         var data = getFormData('#form1');
-        debugger;
         $.ajax({
             url : "<%=contextPath%>/user/doUpdatePwd",
             type : "post",

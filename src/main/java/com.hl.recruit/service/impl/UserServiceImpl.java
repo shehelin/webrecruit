@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * UserServiceImpl class
  *
@@ -84,5 +86,10 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public UserEntity queryUser(UserEntity userEntity) {
+        return userMapper.queryUser(userEntity);
     }
 }
