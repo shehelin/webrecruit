@@ -51,7 +51,7 @@ public class AuthorityFilter implements Filter {
 				|| (uri.contains("/resume") && !uri.endsWith("/resume/"))
 				|| (uri.contains("/areaDict"))
 				|| uri.contains("control.jsp")
-                || (uri.contains("recruitDetail.jsp"))
+                || (uri.contains(".jsp"))
 				|| (!uri.contains(".jsp") && uri.contains("."));
 		if(flag){
 			//放行

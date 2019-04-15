@@ -124,9 +124,10 @@
             var jobArea = Province+City+Town;
             data['jobArea'] = jobArea;
             table.reload('demo', {
-                url: '<%=contextPath%>/recruit/queryRecruit'
+                url: '<%=contextPath%>/recruit/queryRecruit?userId=<%=userId%>'
                 ,where: data //设定异步数据接口的额外参数
                 //,height: 300
+                ,method:'post'
                 ,page: {
                     curr: 1 //重新从第 1 页开始
                 }
@@ -251,7 +252,7 @@
                         area: ['750px', '600px'],
                         offset: 'auto',
                         async:false,
-                        content:'<%=contextPath%>/view/recruit/employeeUser.jsp'
+                        content:'<%=contextPath%>/view/recruit/addRecruit.jsp'
                     });
                     break;
                 case 'update':
