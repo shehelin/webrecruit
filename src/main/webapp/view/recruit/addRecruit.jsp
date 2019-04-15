@@ -156,7 +156,7 @@
                 async: false,//这得注意是同步
                 success: function (data) {
                     if(data){
-                        layer.msg('添加成功', {
+                        layer.msg('发布成功', {
                             icon : 1
                         }, function() {
                             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
@@ -165,7 +165,7 @@
                         });
 
                     }else{
-                        layer.alert('失败');
+                        layer.alert('发布失败');
                         <%--layer.msg('添加失败', {--%>
                             <%--icon : 2--%>
                         <%--}, function() {--%>

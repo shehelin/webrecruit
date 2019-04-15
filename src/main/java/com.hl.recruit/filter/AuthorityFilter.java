@@ -33,15 +33,17 @@ public class AuthorityFilter implements Filter {
 		String uri = httpRequest.getRequestURI();
 		String contentPath = httpRequest.getContextPath();
 
-		boolean flag = uri.equals(contentPath + "/") || uri.contains("index")
+		boolean flag = uri.equals(contentPath + "/")
+                || uri.equals(contentPath+"/recruit/")
+				|| uri.contains("index")
 				|| uri.contains("register")
-				|| uri.contains("doRegister")
+				|| uri.contains("/doRegister")
 				|| uri.contains("login")
 				|| uri.contains("/admin")
 				|| uri.contains("doLogin")
 				|| uri.contains("doAdminLogin")
 				|| uri.contains("queryUserById")
-				|| (uri.contains("/recruit") && !uri.endsWith("/recruit/my"))
+				|| ((uri.contains("/recruit/")&&uri.contains("/queryRecruit")))
 				|| (uri.contains("/employeeJob")&& !(uri.endsWith("/employeeJob/employeeUser")
                         ||uri.endsWith("/employeeJob/employeeCompany")
                         ||uri.contains("/employeeJob/addEmployeeView")))
@@ -49,6 +51,7 @@ public class AuthorityFilter implements Filter {
 				|| (uri.contains("/resume") && !uri.endsWith("/resume/"))
 				|| (uri.contains("/areaDict"))
 				|| uri.contains("control.jsp")
+                || (uri.contains("recruitDetail.jsp"))
 				|| (!uri.contains(".jsp") && uri.contains("."));
 		if(flag){
 			//放行
