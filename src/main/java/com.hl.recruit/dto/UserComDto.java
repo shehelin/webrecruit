@@ -40,10 +40,22 @@ public class UserComDto {
     private String jobProvince;                 //省
     private String jobCity;                     //市
     private String jobTown;                     //区/县
+    private String status;
+
 
     private CompanyEntity companyEntity;
     private UserEntity userEntity;
     private RecruitEntity recruitEntity;
+
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 
 
     public RecruitEntity getRecruitEntity() {

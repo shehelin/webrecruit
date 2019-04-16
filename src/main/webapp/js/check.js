@@ -13,40 +13,74 @@ function getFormData(id) {
     return d;
 }
 
-//提示信息控制（判空、非法字符等）
-//校验成功
-function successInfo(ct){
-    ct.attr("class","label label-success");
-    ct.css("display","");
-    ct.attr("title","ok");
-    ct.html("ok");
-}
-//校验失败-信息
-function warningInfo(ct,info){
-    ct.attr("class","label label-warning");
-    ct.css("display","");
-    ct.attr("title",info);
-    ct.html("warn");
-}
+layui.use(['form','laydate'],function () {
+    var form = layui.form;
+    var laydate = layui.laydate;
+    var resultData;//区域字典值
 
-function refresh(){
-    var data = getFormData('#form1');
+    //区域省
     $.ajax({
-        url : "<%=contextPath%>/user/queryUserById",
-        type : "post",
+        url: '<%=contextPath%>/areaDict/queryProvince',
+        type: "post",
         dataType : "json",
-        data : data,
-        success : function(data) {
-            if (data != null) {
-                window.location.href="";
-            } else {
-                alert("未知错误");
-                window.parent.location.href = "<%=contextPath%>";
+        async: false,//这得注意是同步
+        success: function (result) {
+            resultData = result;
+            var htmls = '<option value=""></option>'; //全局变量
+            for(var x in resultData){
+                htmls += '<option value = "' + resultData[x].id + '">' + resultData[x].district + '</option>'
             }
-
-        },
-        error : function() {
-            alert('系统异常');
+            $("#queryProvince").html(htmls);
         }
     });
-}
+    form.render('select');//需要渲染一下
+
+    //区域市事件
+    form.on('select(queryProvince)', function(data){
+        $.ajax({
+            url: '<%=contextPath%>/areaDict/queryCity',
+            type: "post",
+            dataType : "json",
+            data: {
+                pid: data.value
+            },
+            async: false,//这得注意是同步
+            success: function (result) {
+                resultData = result;
+                var htmls = '<option value=""></option>'; //全局变量
+                for(var x in resultData){
+                    htmls += '<option value = "' + resultData[x].id + '">' + resultData[x].district + '</option>'
+                }
+                $("#queryCity").html(htmls);
+                $("#queryTown").html('<option value=""></option>');
+            }
+        });
+        form.render('select');//需要渲染一下
+
+    });
+
+    //区域县事件
+    form.on('select(queryCity)', function(data){
+        $.ajax({
+            url: '<%=contextPath%>/areaDict/queryTown',
+            type: "post",
+            dataType : "json",
+            data:{
+                pid: data.value
+            },
+            async: false,//这得注意是同步
+            success: function (result) {
+                resultData = result;
+                var htmls = '<option value=""></option>'; //全局变量
+                for(var x in resultData){
+                    htmls += '<option value = "' + resultData[x].id + '">' + resultData[x].district + '</option>'
+                }
+                $("#queryTown").html(htmls);
+            }
+        });
+        form.render('select');//需要渲染一下
+
+    });
+});
+
+

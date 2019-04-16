@@ -3,12 +3,9 @@ package com.hl.recruit.controller;
 import com.hl.recruit.entity.EmpRelCom;
 import com.hl.recruit.entity.EmployeeJobEntity;
 import com.hl.recruit.service.impl.EmployeeJobServiceImpl;
-import com.hl.recruit.util.DataFinalStaticUtil;
 import com.hl.recruit.util.Page;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -122,11 +119,6 @@ public class EmployeeJobController {
     @RequestMapping("/updateRelStatus")
     @ResponseBody
     public boolean updateRelStatus(EmpRelCom empRelCom) {
-        if(empRelCom.getStatus().equals("1")){
-            empRelCom.setStatus(DataFinalStaticUtil.EMP_COM_REL_STATUS_1);
-        }else if(empRelCom.getStatus().equals("2")){
-            empRelCom.setStatus(DataFinalStaticUtil.EMP_COM_REL_STATUS_2);
-        }
         return employeeJobService.updateRelStatus(empRelCom);
     }
 

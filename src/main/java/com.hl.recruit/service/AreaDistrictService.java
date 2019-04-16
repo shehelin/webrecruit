@@ -1,6 +1,7 @@
 package com.hl.recruit.service;
 
 import com.hl.recruit.entity.AreaDistrict;
+import com.hl.recruit.entity.Dict;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +28,48 @@ public interface AreaDistrictService {
      * @return
      */
     List<AreaDistrict> queryTown(Map maps);
+
+    /**
+     * 添加字典类型
+     * @param dict
+     * @return
+     */
+    boolean addDictType(Dict dict);
+
+    /**
+     * 添加字典值
+     * @param dict
+     * @return
+     */
+    boolean addDict(Dict dict);
+
+    /**
+     * 删除字典类型
+     * @param dict
+     * @return
+     */
+    boolean delDictType(Dict dict);
+
+    /**
+     * 删除字典值
+     * @param dict
+     * @return
+     */
+    boolean delDict(Dict dict);
+
+
+    /**
+     * 获取数据字典类型
+     * @param maps
+     * @return
+     */
+    List<Dict> queryDictType(Map maps);
+
+    /**
+     * 获取数据字典值
+     * @param maps
+     * @return
+     */
+    List<Dict> queryDict(Map maps);
+
 }

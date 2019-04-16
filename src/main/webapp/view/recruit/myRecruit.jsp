@@ -4,13 +4,13 @@
 <html>
 <head>
     <%@ include file="../base/base.jsp" %>
-    <title>我的求职</title>
+    <title>我的招聘</title>
     <link rel="stylesheet" href="<%=contextPath%>/layui-v2.4.5/layui/css/layui.css" media="all"/>
 </head>
 <body style="margin-top: 70px">
 
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-    <legend>我的求职栏</legend>
+    <legend>我的招聘栏</legend>
 </fieldset>
 <div id="form1" lay-filter="form1" class="layui-form layui-form-pane">
 

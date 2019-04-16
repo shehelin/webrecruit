@@ -71,4 +71,6 @@ public interface CompanyService {
      */
     List<CompanyEntity> queryCompanyById(Map maps);
 
+    int queryCompanyCount(Map maps);
+
 }

@@ -1,5 +1,6 @@
 package com.hl.recruit.dao;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.hl.recruit.dto.UserComDto;
 import com.hl.recruit.entity.CompanyEntity;
 import com.hl.recruit.util.Page;
@@ -25,11 +26,11 @@ public interface CompanyMapper {
 
     /**
      * 条件查询
-     * @param page
+     * @param pageBounds
      * @param maps
      * @return
      */
-    List<CompanyEntity> queryPageCompany(Page page, Map maps);
+    List<CompanyEntity> queryPageCompany(PageBounds pageBounds, Map maps);
 
     /**
      * 结合user-Com详情
@@ -63,7 +64,7 @@ public interface CompanyMapper {
      * 企业信息count
      * @return
      */
-    int queryCompanyCount();
+    int queryCompanyCount(Map maps);
 
     /**
      * 企业信息byId

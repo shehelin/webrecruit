@@ -1,31 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%    
-	String root = request.getContextPath();
+	String contextPath = request.getContextPath();
 %>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<title>校园招聘管理系统后台</title>
-		<script type="text/javascript" src="<%=root%>/common/js/jquery-1.9.1.js"></script>
-		<link rel="shortcut icon" href="<%=root%>/common/images/head.jpg">
+		<script type="text/javascript" src="<%=contextPath%>/common/js/jquery-1.9.1.js"></script>
+		<link rel="shortcut icon" href="<%=contextPath%>/common/images/head.jpg">
 		<!-- jquery easyui -->
 		<link rel="stylesheet" type="text/css"
-			href="<%=root%>/common/js/easyui/themes/dayun/easyui.css">
+			href="<%=contextPath%>/common/js/easyui/themes/dayun/easyui.css">
 		<link rel="stylesheet" type="text/css"
-			href="<%=root%>/common/js/easyui/themes/icon.css">
+			href="<%=contextPath%>/common/js/easyui/themes/icon.css">
 		<script type="text/javascript"
-			src="<%=root%>/common/js/easyui/js/jquery.easyui.min.js">
+			src="<%=contextPath%>/common/js/easyui/js/jquery.easyui.min.js">
 </script>
 		<script type="text/javascript"
-			src="<%=root%>/common/js/easyui/js/easyui-lang-zh_CN.js">
+			src="<%=contextPath%>/common/js/easyui/js/easyui-lang-zh_CN.js">
 </script>
 		<script type="text/javascript"
-			src="<%=root%>/common/js/easyui/validate/easyui_validate.js">
+			src="<%=contextPath%>/common/js/easyui/validate/easyui_validate.js">
 </script>
 		<link rel="stylesheet" type="text/css"
-			href="<%=root%>/common/css/style1.css">
-		<script type="text/javascript" src="<%=root%>/common/js/main.js">
+			href="<%=contextPath%>/common/css/style1.css">
+		<script type="text/javascript" src="<%=contextPath%>/common/js/main.js">
 </script>
 		<style type="text/css">
 .west {
@@ -59,7 +59,7 @@ A:hover {
 </style>
 		<script type="text/javascript">
 function logout() {
-	window.location.href = "<%=root%>/logout";
+	window.location.href = "<%=contextPath%>/logout";
 }
 
 function currentTime() {
@@ -82,7 +82,7 @@ setInterval(function() {
 		<!-- 正上方panel -->
 		<div region="north" style="padding: 10px;">
 			<div class="top">
-				<img src="<%=root%>/common/images/sheep.jpg"
+				<img src="<%=contextPath%>/common/images/sheep.jpg"
 					style="width: 35px; height: 40px;" />
 				<div class="top_title">
 					<span>您好，管理员。这里是在线招聘系统后台管理</span>
@@ -94,7 +94,7 @@ setInterval(function() {
 				</div>
 				<div class="exit">
 					<a href="javascript:void(0);" onclick="logout();"> <img
-							src="<%=root%>/common/images/exit.jpg" /> <span>退出</span> </a>
+							src="<%=contextPath%>/common/images/exit.jpg" /> <span>退出</span> </a>
 				</div>
 			</div>
 		</div>
@@ -102,34 +102,24 @@ setInterval(function() {
 		<div region="west" title="菜单栏" split="true"
 			style="width: 280px; padding1: 1px; overflow: hidden;" id="westPanel">
 			<div class="easyui-accordion" fit="true" border="false">
-				<!-- selected -->
-				<div title="用户管理" selected="false">
-					<ul>
-						<li>
-							<a
-								href="javascript:addTab('tabId_loginInfo','用户管理','<%=root%>/admin/userManager');">用户管理</a>
-						</li>
-						<li>
-							<a
-								href="javascript:addTab('tabId_privilege','企业管理','<%=root%>/admin/goComs');">企业管理</a>
-						</li>
-					</ul>
-				</div>
 				
-								<div title="信息管理" selected="false">
+                <div title="信息管理" selected="false">
 					<ul>
 						<li>
-							<a
-								href="javascript:addTab('tabId_loginInfo','企业信息管理','<%=root%>/admin/goJobs');">职位监督</a>
+							<a href="javascript:addTab('tabId_loginInfo','企业信息','<%=contextPath%>/admin/goCompany');">企业信息管理</a>
 						</li>
 						<li>
-							<a
-								href="javascript:addTab('tabId_privilege','简历信息管理','<%=root%>/admin/goInfos');">论坛监督</a>
+							<a href="javascript:addTab('tabId_privilege','招聘信息','<%=contextPath%>/admin/goRecruit');">招聘信息管理</a>
 						</li>
 					</ul>
 				</div>
-
-
+                <div title="数据字典" selected="false">
+                    <ul>
+                        <li>
+                            <a href="javascript:addTab('tabId_loginInfo','数据字典','<%=contextPath%>/admin/goData');">数据字典</a>
+                        </li>
+                    </ul>
+                </div>
 			</div>
 		</div>
 		<!-- 正中间panel -->

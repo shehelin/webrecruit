@@ -1,5 +1,6 @@
 package com.hl.recruit.service.impl;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.hl.recruit.dao.CompanyMapper;
 import com.hl.recruit.dto.UserComDto;
 import com.hl.recruit.entity.CompanyEntity;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyEntity> queryPageCompany(Page page, Map maps) {
-        return companyMapper.queryPageCompany(page,maps);
+        try {
+            PageBounds pageBounds = page.toPageBounds();
+            page.setTotalCount(queryCompanyCount(maps));
+            return companyMapper.queryPageCompany(pageBounds, maps);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ArrayList<CompanyEntity>();
+        }
     }
 
     @Override
@@ -84,14 +93,19 @@ public class CompanyServiceImpl implements CompanyService {
         companyEntity.setCreateTime(DateUtil.getCurrentTime());
         List<CompanyEntity> companyList = queryCompanyById(maps);
         if(companyList == null || companyList.size() == 0){
-          return addCompany(companyEntity);
+            return companyMapper.addCompany(companyEntity) > 0 ?  true:false;
         }else{
-            return updateCompanyById(companyEntity);
+            return companyMapper.updateCompanyById(companyEntity)> 0 ?  true:false;
         }
     }
 
     @Override
     public List<CompanyEntity> queryCompanyById(Map maps) {
         return companyMapper.queryCompanyById(maps);
+    }
+
+    @Override
+    public int queryCompanyCount(Map maps) {
+        return companyMapper.queryCompanyCount(maps);
     }
 }

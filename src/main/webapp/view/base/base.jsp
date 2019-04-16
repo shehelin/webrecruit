@@ -49,7 +49,7 @@
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="<%=contextPath%>"><span class="glyphicon glyphicon-home"></span> 首页信息</a></li>
+				<li class="active"><a href="<%=contextPath%>"><span class="glyphicon glyphicon-home"></span> 首页</a></li>
 				<li class="dropdown" id="USER">
                      <a class="dropdown-toggle glyphicon glyphicon-lock" data-toggle="dropdown" href="#">求职通道<b class="caret"></b></a>
                       <ul class="dropdown-menu">
@@ -72,8 +72,6 @@
                     <ul class="dropdown-menu">
                         <li><a href="<%=contextPath%>/user/updatePwd">修改密码</a></li>
                         <li><a href="<%=contextPath%>/user/updateUser">用户信息</a></li>
-                        <li class="divider"></li>
-                        <li><a href="<%=contextPath%>/recruit/">招聘信息</a></li>
                     </ul>
                 </li>
 			</ul>

@@ -4,6 +4,7 @@ import com.hl.recruit.entity.CompanyEntity;
 import com.hl.recruit.entity.UserEntity;
 import com.hl.recruit.service.impl.CompanyServiceImpl;
 import com.hl.recruit.util.BaseResponse;
+import com.hl.recruit.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,5 +59,29 @@ public class CompanyController {
         return companyList;
     }
 
+
+    /**
+     * 企业管理
+     * @param maps
+     * @param page
+     * @return
+     */
+    @RequestMapping("/queryPageCompany")
+    @ResponseBody
+    public Map queryPageCompany(Map maps, Page page){
+        String pageIndex = maps.get("page").toString();
+        String pageSize  = maps.get("limit").toString();
+        int index = Integer.parseInt(pageIndex);
+        int size =Integer.parseInt(pageSize);
+        page.setPageIndex(index-1);
+        page.setPageSize(size);
+        List<CompanyEntity> list = companyService.queryPageCompany(page,maps);
+        Map map = new HashMap<String,Object>(4);
+        map.put("code",0);
+        map.put("data",list);
+        map.put("msg","");
+        map.put("count",page.getTotalCount());
+        return map;
+    }
 
 }

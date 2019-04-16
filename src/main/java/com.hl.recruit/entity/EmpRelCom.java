@@ -1,6 +1,5 @@
 package com.hl.recruit.entity;
 
-import com.hl.recruit.util.DataFinalStaticUtil;
 
 /**
  * EmpRelCom class
@@ -12,7 +11,7 @@ public class EmpRelCom {
     private String relId;
     private String empId;
     private String comId;
-    private String status= DataFinalStaticUtil.EMP_COM_REL_STATUS_0;
+    private String status;
 
 
     public String getRelId() {

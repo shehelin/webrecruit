@@ -17,7 +17,7 @@
     <div class="layui-form-item">
 
         <div class="layui-inline">
-            <label class="layui-form-label">职 位</label>
+            <label class="layui-form-label">岗 位</label>
             <div class="layui-input-block">
                 <input  type="text" name="empJob"  placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
@@ -29,34 +29,32 @@
                 <input  type="text" name="empSalary"  placeholder="￥" autocomplete="off" class="layui-input">
             </div>
         </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">期望地址</label>
+            <div class="layui-input-inline">
+                <select name="queryProvince" id="queryProvince" lay-filter="queryProvince">
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="queryCity" id="queryCity" lay-filter="queryCity">
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select name="queryTown" id="queryTown">
+                    <option value=""></option>
+                </select>
+            </div>
+        </div>
+
     </div>
 
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">期望地址</label>
-        <div class="layui-input-inline">
-            <select name="queryProvince" id="queryProvince" lay-filter="queryProvince">
-            </select>
-        </div>
-        <div class="layui-input-inline">
-            <select name="queryCity" id="queryCity" lay-filter="queryCity">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="layui-input-inline">
-            <select name="queryTown" id="queryTown">
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">申请状态</label>
         <div class="layui-input-inline">
             <select name="status" id="status" >
-                <option value="">请选择</option>
-                <option value="审核">审核</option>
-                <option value="通过">通过</option>
-                <option value="拒绝">拒绝</option>
             </select>
         </div>
 
@@ -84,9 +82,7 @@
             , url: '<%=contextPath%>/employeeJob/queryEmployeeJob?userId=<%=userId%>'
             , page: true //开启分页
             , skin: 'line'
-            ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'},
                 {field: 'empId', title: '申请编号',sort: true, fixed: 'left',hide:true}
                 ,{field: 'comId',title:'企业编号', sort:true, fixed:'left',hide:true}
                 , {field: 'empName', title: '申请人', width: 140, sort: true}
@@ -95,9 +91,17 @@
                 , {field: 'empArea', title: '期望工作地点', width: 140, sort: true}
                 , {field: 'remark', title: '备注', width: 140, sort: true}
                 , {field: 'comName', title: '应聘单位', width: 140, sort: true}
-                , {field: 'status', title: '申请状态', width: 140, sort: true}
-                , {field: 'createTime', title: '申请时间', width: 140, sort: true}
-                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
+                , {field: 'status', title: '申请状态', width: 140, templet:function (data) {
+                        if(data.status == '0'){
+                            return "待审核"
+                        }if(data.status == '1'){
+                            return "申请通过"
+                        }if(data.status == '2'){
+                            return "申请失败"
+                        }
+                    }}
+                , {field: 'createTime', title: '申请时间', width: 200, sort: true}
+                , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 180}
             ]]
         });
         //日期映射
@@ -148,8 +152,9 @@
             var Town =$("#queryTown").find("option:selected").text();
             var area = Province+City+Town;
             data1['empArea'] = area;
+            console.log(data1);
             table.reload('demo', {
-                url: '<%=contextPath%>/employeeJob/queryEmployeeJob'
+                url: '<%=contextPath%>/employeeJob/queryEmployeeJob?userId=<%=userId%>'
                 ,where: data1 //设定异步数据接口的额外参数
                 //,height: 300
                 ,method:'post'
@@ -160,8 +165,27 @@
         });
 
 
-        //区域省
+        //字典值
         var resultData;
+
+        //审核状态字典
+        $.ajax({
+            url: '<%=contextPath%>/areaDict/queryDict',
+            type: "post",
+            dataType : "json",
+            async: false,//这得注意是同步
+            data:{
+                dictTypeId:"status"
+            },
+            success: function (result) {
+                resultData = result;
+                var htmls = '<option value=""></option>'; //全局变量
+                for(var x in resultData){
+                    htmls += '<option value = "' + resultData[x].dictId + '">' + resultData[x].dictName + '</option>'
+                }
+                $("#status").html(htmls);
+            }
+        });
 
         $.ajax({
             url: '<%=contextPath%>/areaDict/queryProvince',

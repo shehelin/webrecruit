@@ -8,6 +8,13 @@
         <result property="level" column="level" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="dictResultMap" type="com.hl.recruit.entity.Dict">
+        <id property="dictTypeId" column="t_dict_type_id" jdbcType="VARCHAR"/>
+        <result property="dictTypeName" column="t_dict_type_name" jdbcType="VARCHAR"/>
+        <result property="dictId" column="t_dict_id" jdbcType="VARCHAR"/>
+        <result property="dictName" column="t_dict_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <select id="queryProvince" resultType="com.hl.recruit.entity.AreaDistrict">
       select * from rc_district
       where level = 1
@@ -24,4 +31,45 @@
       where level = 3
         and pid = #{pid}
     </select>
+
+
+    <select id="queryDictType" parameterType="java.util.Map" resultMap="dictResultMap">
+        select t_dict_type_id,t_dict_type_name
+        from t_dict_type
+    </select>
+
+    <select id="queryDict" parameterType="java.util.Map" resultMap="dictResultMap">
+        select t_dict_type_id,t_dict_id,t_dict_name
+        from t_dict
+        where 1=1
+        <if test="dictTypeId != null &amp;&amp; dictTypeId != '' ">
+            and t_dict_type_id = #{dictTypeId}
+        </if>
+    </select>
+
+    <insert id="addDictType" parameterType="com.hl.recruit.entity.Dict">
+      insert into t_dict_type(t_dict_type_id, t_dict_type_name) values (
+      #{dictTypeId},
+      #{dictTypeName}
+      )
+    </insert>
+
+    <insert id="addDict" parameterType="com.hl.recruit.entity.Dict">
+      insert into t_dict(t_dict_type_id, t_dict_id, t_dict_name) VALUES (
+         #{dictTypeId},
+        #{dictId},
+        #{dictName}
+      )
+    </insert>
+
+    <delete id="delDictType" parameterType="com.hl.recruit.entity.Dict">
+      delete from t_dict_type
+      where t_dict_type_id = #{dictTypeId}
+    </delete>
+
+    <delete id="delDict" parameterType="com.hl.recruit.entity.Dict">
+      delete from t_dict
+      where t_dict_type_id = #{dictTypeId}
+    </delete>
+
 </mapper>

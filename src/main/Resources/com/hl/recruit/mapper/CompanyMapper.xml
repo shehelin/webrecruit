@@ -11,6 +11,7 @@
         <result property="comAddress" column="t_com_address" jdbcType="VARCHAR" />
         <result property="comTel" column="t_com_tel" jdbcType="VARCHAR" />
         <result property="createTime" column="t_create_time" jdbcType="TIMESTAMP" />
+        <result property="status" column="status" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="userResultMap" type="com.hl.recruit.entity.UserEntity" >
@@ -27,9 +28,7 @@
         <association property="userEntity" column="t_user_id" resultMap="userResultMap" />
     </resultMap>
 
-    <insert id="addCompany" parameterType="com.hl.recruit.entity.CompanyEntity">
-      INSERT INTO t_company
-      (
+    <sql id="tSQL">
         t_com_id,
         t_com_name,
         t_com_type,
@@ -38,7 +37,13 @@
         t_com_address,
         t_user_id,
         t_com_tel,
-        t_create_time
+        t_create_time,
+        status
+    </sql>
+    <insert id="addCompany" parameterType="com.hl.recruit.entity.CompanyEntity">
+      INSERT INTO t_company
+      (
+       <include refid="tSQL" />
       )VALUES (
           #{comId},
           #{comName},
@@ -49,19 +54,37 @@
           #{userId},
           #{comTel},
           #{createTime}
+          #{status}
       )
     </insert>
     
     <update id="updateCompanyById" parameterType="com.hl.recruit.entity.CompanyEntity">
         UPDATE t_company
         SET
-        t_com_id =  #{comId},
-        t_com_name = #{comName},
-        t_com_type = #{comType},
-        t_com_info = #{comInfo},
-        t_remark = #{remark},
-        t_com_address = #{comAddress},
-        t_com_tel = #{comTel}
+        <if test="comId != null &amp;&amp; comId != '' ">
+            t_com_id =  #{comId}
+        </if>
+        <if test="comName != null &amp;&amp; comName != '' ">
+            ,t_com_name = #{comName}
+        </if>
+        <if test="comType != null &amp;&amp; comType != '' ">
+            ,t_com_type = #{comType}
+        </if>
+        <if test="comInfo != null &amp;&amp; comInfo != '' ">
+            ,t_com_info = #{comInfo}
+        </if>
+        <if test="remark != null &amp;&amp; remark != '' ">
+            ,t_remark = #{remark}
+        </if>
+        <if test="comAddress != null &amp;&amp; comAddress != '' ">
+            ,t_com_address = #{comAddress}
+        </if>
+        <if test="comTel != null &amp;&amp; comTel != '' ">
+            ,t_com_tel = #{comTel}
+        </if>
+        <if test="status != null &amp;&amp; status != '' ">
+            ,status = #{status}
+        </if>
         WHERE
           t_user_id = #{userId}
     </update>
@@ -73,28 +96,24 @@
     </delete>
 
     <select id="queryAllCompany" resultMap="CompanyResultMap">
-        SELECT   t_com_id,t_com_name,t_com_type,
-                t_com_info,t_remark,t_com_address,
-              t_user_id,t_com_tel,t_create_time
+        SELECT
+        <include refid="tSQL" />
         FROM t_company
     </select>
 
     <select id ="queryPageCompany" parameterType="java.util.Map" resultMap="CompanyResultMap">
        SELECT
-        t_com_id,
-        t_com_name,t_com_type,
-        t_com_info,t_remark,t_com_address,
-        t_com_tel,t_create_time
+        <include refid="tSQL" />
        FROM t_company
        WHERE 1=1
         <if test="comId != null &amp;&amp; comId != ''">
             AND t_com_id LIKE CONCAT('%',#{comId},'%')
         </if>
-        <if test="userId != null &amp;&amp; userId != ''">
-            AND t_user_id LIKE CONCAT('%',#{userId},'%')
-        </if>
         <if test="comType != null &amp;&amp; comType != ''">
             AND t_com_type LIKE CONCAT('%',#{comType},'%')
+        </if>
+        <if test="status != null &amp;&amp; status != '' ">
+            AND status = #{status}
         </if>
        ORDER BY t_com_id
     </select>
@@ -117,15 +136,23 @@
         BY c.t_user_id,c.t_com_id
     </select>
 
-    <select id="queryCompanyCount" resultType="java.lang.Integer">
+    <select id="queryCompanyCount" parameterType="java.util.Map" resultType="java.lang.Integer">
       SELECT count(1) FROM t_company
+        WHERE 1=1
+        <if test="comId != null &amp;&amp; comId != ''">
+            AND t_com_id LIKE CONCAT('%',#{comId},'%')
+        </if>
+        <if test="comType != null &amp;&amp; comType != ''">
+            AND t_com_type LIKE CONCAT('%',#{comType},'%')
+        </if>
+        <if test="status != null &amp;&amp; status != '' ">
+            AND status = #{status}
+        </if>
     </select>
 
     <select id="queryCompanyById" parameterType="java.util.Map" resultMap="CompanyResultMap">
-      SELECT t_com_id,t_user_id,
-        t_com_name,t_com_type,
-        t_com_info,t_remark,t_com_address,
-        t_com_tel,t_create_time
+      SELECT
+        <include refid="tSQL" />
         FROM t_company
         WHERE
         t_user_id = #{userId}

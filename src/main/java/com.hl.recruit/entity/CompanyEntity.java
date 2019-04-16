@@ -18,6 +18,7 @@ public class CompanyEntity implements Serializable {
     private String comAddress; //地址
     private String comTel;    //企业电话
     private String createTime; //创建时间
+    private String status = "0"; //审核状态
 
     public String getComId() {
         return comId;
@@ -89,5 +90,13 @@ public class CompanyEntity implements Serializable {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

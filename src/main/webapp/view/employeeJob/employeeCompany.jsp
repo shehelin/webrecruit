@@ -24,12 +24,10 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">申请状态</label>
+            <label class="layui-form-label">审核状态</label>
             <div class="layui-input-block">
                 <select name="status" id="status" >
-                    <option value="">请选择</option>
-                    <option value="审核">审核</option>
-                    <option value="通过">通过</option>
+
                 </select>
             </div>
         </div>
@@ -78,7 +76,6 @@
             , page: true
             , skin: 'line'
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'},
                 {field: 'empId', title: '申请编号',sort: true, fixed: 'left',hide:true}
                 ,{field: 'comId',title:'企业编号', sort:true, fixed:'left',hide:true}
                 , {field: 'empName', title: '申请人', width: 140, sort: true}
@@ -87,7 +84,15 @@
                 , {field: 'empArea', title: '期望工作地点', width: 140, sort: true}
                 , {field: 'remark', title: '备注', width: 140, sort: true}
                 , {field: 'comName', title: '应聘单位', width: 140, sort: true}
-                , {field: 'status', title: '申请状态', width: 140, sort: true}
+                , {field: 'status', title: '审核状态', width: 140, templet:function (data) {
+                        if(data.status == '0'){
+                            return "待审核"
+                        }if(data.status == '1'){
+                            return "申请通过"
+                        }if(data.status == '2'){
+                            return "申请失败"
+                        }
+                    }}
                 , {field: 'createTime', title: '申请时间', width: 140, sort: true}
                 , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
             ]]
@@ -182,6 +187,29 @@
                 }
             });
         });
+
+        //字典值
+        var resultData;
+
+        //审核状态字典
+        $.ajax({
+            url: '<%=contextPath%>/areaDict/queryDict',
+            type: "post",
+            dataType : "json",
+            async: false,//这得注意是同步
+            data:{
+                dictTypeId:"status"
+            },
+            success: function (result) {
+                resultData = result;
+                var htmls = '<option value=""></option>'; //全局变量
+                for(var x in resultData){
+                    htmls += '<option value = "' + resultData[x].dictId + '">' + resultData[x].dictName + '</option>'
+                }
+                $("#status").html(htmls);
+            }
+        });
+        form.render('select');
 
     });
 

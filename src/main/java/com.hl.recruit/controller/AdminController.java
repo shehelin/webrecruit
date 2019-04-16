@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 /**
@@ -41,45 +40,34 @@ public class AdminController {
 	 * 进入数据录入页面
 	 * @return
 	 */
-	@RequestMapping(value = "/goAdmin")
-	public ModelAndView enterPage() {
+	@RequestMapping(value = "/goCompany")
+	public ModelAndView goCompany() {
 		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/adminManager");
+		view.setViewName("admin/companyManager");
 		return view;
 	}
 	/**
 	 * 进入数据录入页面
 	 * @return
 	 */
-	@RequestMapping(value = "/userManager")
-	public ModelAndView goEmps() {
+	@RequestMapping(value = "/goRecruit")
+	public ModelAndView goRecruit() {
 		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/userManager");
+		view.setViewName("admin/recruitManager");
 		return view;
 	}
+
 	/**
-	 * 进入数据录入页面
+	 * 基础信息管理
 	 * @return
 	 */
-	@RequestMapping(value = "/goComs")
-	public ModelAndView goComs() {
-		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/coms");
-		return view;
-	}
-	
-	@RequestMapping(value = "/goJobs")
-	public ModelAndView goJobs() {
-		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/jobs");
-		return view;
-	}
 	@RequestMapping(value = "/goInfos")
 	public ModelAndView goInfos() {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("admin/infos");
 		return view;
 	}
+
 
 
 	/**

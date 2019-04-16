@@ -96,7 +96,9 @@
         LEFT JOIN t_emp_rel_com b ON a.t_emp_id = b.t_emp_id
         LEFT JOIN t_company c on b.t_com_id = c.t_com_id
         WHERE 1=1
-        AND a.t_user_id = #{userId}
+        <if test="userId !=null &amp;&amp; userId != ''">
+            AND  a.t_user_id = #{userId}
+        </if>
         <if test="status !=null &amp;&amp; status != ''">
             AND b.status = #{status}
         </if>
@@ -129,7 +131,7 @@
         LEFT JOIN t_emp_rel_com b ON a.t_emp_id = b.t_emp_id
         LEFT JOIN t_company c on b.t_com_id = c.t_com_id
         WHERE 1=1
-        AND b.status in('审核','通过')
+        AND b.status in('0','1')
         <if test="comId !=null &amp;&amp; comId != ''">
           AND c.t_com_id = #{comId}
         </if>
