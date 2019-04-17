@@ -72,5 +72,12 @@ public interface CompanyMapper {
      * @return
      */
     List<CompanyEntity> queryCompanyById(Map maps);
+
+    /**
+     * 修改-审核状态
+     * @param companyEntity
+     * @return
+     */
+    int updateStatus(CompanyEntity companyEntity);
 }
 

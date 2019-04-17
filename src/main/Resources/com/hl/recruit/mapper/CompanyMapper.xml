@@ -140,4 +140,10 @@
         WHERE
         t_user_id = #{userId}
     </select>
+
+    <update id="updateStatus" parameterType="com.hl.recruit.entity.CompanyEntity">
+        update t_company
+        set status = #{status}
+        where t_com_id = #{comId}
+    </update>
 </mapper>

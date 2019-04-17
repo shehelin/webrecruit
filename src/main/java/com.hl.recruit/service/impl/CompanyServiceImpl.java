@@ -2,6 +2,7 @@ package com.hl.recruit.service.impl;
 
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.hl.recruit.dao.CompanyMapper;
+import com.hl.recruit.dao.RecruitMapper;
 import com.hl.recruit.dto.UserComDto;
 import com.hl.recruit.entity.CompanyEntity;
 import com.hl.recruit.entity.UserEntity;
@@ -28,6 +29,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     CompanyMapper companyMapper;
+
+    @Autowired
+    RecruitMapper recruitMapper;
 
 
     @Override
@@ -107,5 +111,18 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public int queryCompanyCount(Map maps) {
         return companyMapper.queryCompanyCount(maps);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStatus(CompanyEntity companyEntity) {
+        Map map = new HashMap<String,Object>();
+        map.put("userId",companyEntity.getUserId());
+        //判断该企业有没有发布招聘信息
+        int count = recruitMapper.queryRecruitCount(map);
+        if(count > 0){
+            return false;
+        }
+        return companyMapper.updateStatus(companyEntity)>0?true:false;
     }
 }

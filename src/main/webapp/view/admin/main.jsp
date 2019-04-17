@@ -106,17 +106,17 @@ setInterval(function() {
                 <div title="信息管理" selected="false">
 					<ul>
 						<li>
-							<a href="javascript:addTab('tabId_loginInfo','企业信息','<%=contextPath%>/admin/goCompany');">企业信息管理</a>
+							<a href="javascript:addTab('tabId_loginInfo','企业信息','<%=contextPath%>/admin/goCompany');">企业信息审核</a>
 						</li>
 						<li>
-							<a href="javascript:addTab('tabId_privilege','招聘信息','<%=contextPath%>/admin/goRecruit');">招聘信息管理</a>
+							<a href="javascript:addTab('tabId_privilege','招聘信息','<%=contextPath%>/admin/goRecruit');">招聘信息审核</a>
 						</li>
 					</ul>
 				</div>
                 <div title="数据字典" selected="false">
                     <ul>
                         <li>
-                            <a href="javascript:addTab('tabId_loginInfo','数据字典','<%=contextPath%>/admin/goData');">数据字典</a>
+                            <a href="javascript:addTab('tabId_loginInfo','数据字典','<%=contextPath%>/admin/goDict');">数据字典</a>
                         </li>
                     </ul>
                 </div>

@@ -14,6 +14,21 @@
     <div class="layui-form-item">
 
         <div class="layui-inline">
+            <label class="layui-form-label">审核状态</label>
+            <div class="layui-input-block">
+                <select name="status" id="status">
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">有效状态</label>
+            <div class="layui-input-block">
+                <select name="valid" id="valid">
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-inline">
             <label class="layui-form-label">职 位</label>
             <div class="layui-input-block">
                 <input  type="text" name="jobName"  placeholder="请输入" autocomplete="off" class="layui-input">
@@ -47,6 +62,7 @@
     <a class="layui-btn layui-btn-xs" lay-event="yes">通过</a>
 </script>
 
+
 <script type="text/javascript">
 
     layui.use(['table','form','laydate'], function() {
@@ -67,7 +83,7 @@
                       if(data.status=='1'){
                           return '审核通过';
                       }else if(data.status =='2'){
-                          return '审核失败';
+                          return '回退成功';
                       }else{
                           return '待审核';
                       }
@@ -120,6 +136,10 @@
                 });
             }else if(layEvent==='yes'){
                 var data = obj.data; //获得当前行数据
+                if(data['status'] === '1'){
+                    layer.alert('已经是该状态了');
+                    return;
+                }
                 data['status'] = '1';
                 data['valid'] = '1'
                 layer.confirm('是否通过审核？',function(){
@@ -145,6 +165,10 @@
             }else if(layEvent==='no'){
 
                 var data = obj.data; //获得当前行数据
+                if(data['status'] === '2'){
+                    layer.alert('已经是该状态了');
+                    return;
+                }
                 data['status'] = '2';
                 data['valid'] = '0';
                 layer.confirm('是否回退？',function() {
@@ -181,20 +205,8 @@
         //区域省
         var resultData;
 
-        $.ajax({
-            url: '<%=contextPath%>/areaDict/queryProvince',
-            type: "post",
-            dataType : "json",
-            async: false,//这得注意是同步
-            success: function (result) {
-                resultData = result;
-                var htmls = '<option value=""></option>'; //全局变量
-                for(var x in resultData){
-                    htmls += '<option value = "' + resultData[x].id + '">' + resultData[x].district + '</option>'
-                }
-                $("#queryProvince").html(htmls);
-            }
-        });
+        $("#status").html(getDict('status'));
+        $("#valid").html(getDict('valid'));
         form.render('select');//需要渲染一下
 
 
@@ -208,6 +220,27 @@
                     curr: 1 //重新从第 1 页开始
                 }
             });
+        }
+
+        function getDict(dictType){
+            var result;
+            var htmls = '<option value=""></option>'; //全局变量
+            $.ajax({
+                url: '<%=contextPath%>/areaDict/queryDict',
+                type: "post",
+                dataType : "json",
+                async: false,//这得注意是同步
+                data:{
+                    dictTypeId: dictType
+                },
+                success: function (data) {
+                    result = data;
+                    for(var x in result){
+                        htmls += '<option value = "' + result[x].dictId + '">' + result[x].dictName + '</option>'
+                    }
+                }
+            });
+            return htmls;
         }
 
     });

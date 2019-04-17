@@ -34,6 +34,25 @@ function getDict(dictType){
     return htmls;
 }
 
+function getDictName(dictType,dictId){
+    var result;
+    $.ajax({
+        url: '../areaDict/queryDict',
+        type: "post",
+        dataType : "json",
+        async: false,//这得注意是同步
+        data:{
+            dictTypeId: dictType,
+            dictId : dictId
+        },
+        success: function (data) {
+            result = data;
+        }
+    });
+    return result[0].dictName;
+}
+
+
 
 
 

@@ -22,9 +22,11 @@
 		if( userName == ""){
             $("li.login-login").css("display","");
             $("li.login-stand").css("display","none");
+            $("#fcy").css("display","none");
 		}else{
             $("li.login-login").css("display","none");
             $("li.login-stand").css("display","");
+            $("#fcy").css("display","");
 		}
 		if(userStatus == "1") {
             $("#USER").css("display", "none");
@@ -67,18 +69,17 @@
 						 <li><a href="<%=contextPath%>/employeeJob/employeeCompany">我的应聘</a></li>
                       </ul>
                  </li>
-				<li class="dropdown" id="self">
-                    <a class="dropdown-toggle glyphicon glyphicon-apple" data-toggle="dropdown" href="#"> 发现<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="<%=contextPath%>/user/updatePwd">修改密码</a></li>
-                        <li><a href="<%=contextPath%>/user/updateUser">用户信息</a></li>
-                    </ul>
-                </li>
 			</ul>
 			 <ul class="nav navbar-nav navbar-right">
       			<li class="login-login"><a href="<%=contextPath%>/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
       			<li class="login-register"><a href="<%=contextPath%>/register"><span class="glyphicon glyphicon-log-in"></span> 注册</a></li>
-      			<li class="login-stand"><a download="w3logo" href="<%=contextPath%>/image/indexImage/guanggao.jpg"><span class="glyphicon glyphicon-user"></span> <%=userName%></a></li>
+				 <li class="dropdown" id="userName">
+					 <a class="dropdown-toggle glyphicon glyphicon-user" id="fcy"data-toggle="dropdown" href="#"><%=userName%><b class="caret"></b></a>
+					 <ul class="dropdown-menu">
+						 <li><a href="<%=contextPath%>/user/updatePwd">修改密码</a></li>
+						 <li><a href="<%=contextPath%>/user/updateUser">用户信息</a></li>
+					 </ul>
+			 	</li>
       			<li class="login-stand"><a href="<%=contextPath%>/logout"><span class="glyphicon glyphicon-log-in"></span> 注销</a></li>
    	 		</ul>
 		</div>

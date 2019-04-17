@@ -7,6 +7,7 @@ import com.hl.recruit.service.AreaDistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,24 +56,20 @@ public class AreaDistrictServiceImpl implements AreaDistrictService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delDictType(Dict dict) {
         try{
-            return areaDistrictMapper.delDictType(dict) > 0 ? true:false;
+
+            if( areaDistrictMapper.delDictType(dict) > 0 ? true:false){
+                return areaDistrictMapper.delDict(dict)>0?true:false;
+            }
         }catch (Exception e){
             e.printStackTrace();
             return false;
         }
+        return false;
     }
 
-    @Override
-    public boolean delDict(Dict dict) {
-        try{
-            return areaDistrictMapper.delDict(dict) > 0 ? true:false;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     @Override
     public List<Dict> queryDictType(Map maps) {

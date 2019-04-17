@@ -8,6 +8,7 @@ import com.hl.recruit.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,10 +52,14 @@ public class CompanyController {
 
     @RequestMapping("/queryCompanyById")
     @ResponseBody
-    public List<CompanyEntity> queryCompany(HttpServletRequest request){
-        UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
+    public List<CompanyEntity> queryCompany(HttpServletRequest request,String userId){
+        UserEntity userEntity ;
+        if(userId == null || userId.equals("")){
+            userEntity  = (UserEntity)request.getSession().getAttribute("user");
+            userId = userEntity.getUserId();
+        }
         Map<String,String> maps = new HashMap();
-        maps.put("userId", userEntity.getUserId());
+        maps.put("userId", userId);
         List<CompanyEntity> companyList = companyService.queryCompanyById(maps);
         return companyList;
     }
@@ -63,12 +68,12 @@ public class CompanyController {
     /**
      * 企业管理
      * @param maps
-     * @param page
      * @return
      */
     @RequestMapping("/queryPageCompany")
     @ResponseBody
-    public Map queryPageCompany(Map maps, Page page){
+    public Map queryPageCompany(@RequestParam Map<String,Object> maps){
+        Page page = new Page();
         String pageIndex = maps.get("page").toString();
         String pageSize  = maps.get("limit").toString();
         int index = Integer.parseInt(pageIndex);
@@ -82,6 +87,17 @@ public class CompanyController {
         map.put("msg","");
         map.put("count",page.getTotalCount());
         return map;
+    }
+
+    /**
+     * 审核
+     * @param companyEntity
+     * @return
+     */
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public boolean updateStatus(CompanyEntity companyEntity){
+        return companyService.updateStatus(companyEntity);
     }
 
 }

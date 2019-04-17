@@ -73,4 +73,12 @@ public interface CompanyService {
 
     int queryCompanyCount(Map maps);
 
+
+    /**
+     *  修改审核状态
+     * @param companyEntity
+     * @return
+     */
+    boolean updateStatus(CompanyEntity companyEntity);
+
 }

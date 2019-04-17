@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,12 +50,33 @@ public class AreaDistrictController {
         return areaDistrictService.queryDictType(maps);
     }
 
+    @RequestMapping("/queryDictTypes")
+    @ResponseBody
+    public Map queryDictTypes(@RequestParam Map<String,Object> maps){
+        List<Dict> dictTypeList = areaDistrictService.queryDictType(maps);
+        Map map = new HashMap<String,Object>(4);
+        map.put("code",0);
+        map.put("data",dictTypeList);
+        map.put("msg","");
+        return map;
+    }
+
     @RequestMapping("/queryDict")
     @ResponseBody
     public List<Dict> queryDict(@RequestParam Map<String,Object> maps){
         return areaDistrictService.queryDict(maps);
     }
 
+    @RequestMapping("/queryDicts")
+    @ResponseBody
+    public Map queryDicts(@RequestParam Map<String,Object> maps){
+        List<Dict> dictList = areaDistrictService.queryDict(maps);
+        Map map = new HashMap<String,Object>(4);
+        map.put("code",0);
+        map.put("data",dictList);
+        map.put("msg","");
+        return map;
+    }
 
     @RequestMapping("/addDictType")
     @ResponseBody
@@ -74,10 +96,6 @@ public class AreaDistrictController {
         return areaDistrictService.delDictType(dict);
     }
 
-    @RequestMapping("/delDict")
-    @ResponseBody
-    public boolean delDict(Dict dict){
-        return areaDistrictService.delDict(dict);
-    }
+
 
 }

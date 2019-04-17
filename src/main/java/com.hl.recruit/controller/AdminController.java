@@ -61,10 +61,10 @@ public class AdminController {
 	 * 基础信息管理
 	 * @return
 	 */
-	@RequestMapping(value = "/goInfos")
+	@RequestMapping(value = "/goDict")
 	public ModelAndView goInfos() {
 		ModelAndView view = new ModelAndView();
-		view.setViewName("admin/infos");
+		view.setViewName("admin/DictInfos");
 		return view;
 	}
 

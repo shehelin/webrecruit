@@ -50,13 +50,6 @@ public interface AreaDistrictService {
      */
     boolean delDictType(Dict dict);
 
-    /**
-     * 删除字典值
-     * @param dict
-     * @return
-     */
-    boolean delDict(Dict dict);
-
 
     /**
      * 获取数据字典类型

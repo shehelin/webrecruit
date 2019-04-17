@@ -189,6 +189,8 @@
             document.write("<form action='<%=contextPath%>/employeeJob/addEmployeeView' method='post' name='form2' style='display:none'>");
             document.write("<input type='hidden' name='comId' value="+data1.comId+">");
             document.write("<input type='hidden' name='jobName' value="+data1.jobName+">");
+            document.write("<input type='hidden' name='jobName' value="+data1.jobName+">");
+            document.write("<input type='hidden' name='jobName' value="+data1.jobName+">");
             document.write("</form>");
             document.form2.submit();
             parent.layer.title('申请职位流程');
