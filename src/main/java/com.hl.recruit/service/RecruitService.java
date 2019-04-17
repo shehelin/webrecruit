@@ -51,4 +51,12 @@ public interface RecruitService {
      */
     int queryRecruitCount(Map maps);
 
+    /**
+     * 分页查询招聘信息-企业
+     * @param page
+     * @param maps
+     * @return
+     */
+    List<UserComDto> queryMyRecruit(Page page, Map maps);
+
 }

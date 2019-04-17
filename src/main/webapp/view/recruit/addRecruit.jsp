@@ -38,14 +38,14 @@
         <div class="layui-inline">
             <label class="layui-form-label">招聘职位</label>
             <div class="layui-input-block">
-                <input  type="text" name="jobName"  placeholder="请输入" autocomplete="off" class="layui-input">
+                <input  type="text" name="jobName"  placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label">招聘人数</label>
             <div class="layui-input-block">
-                <input  type="text" name="jobNumber"  placeholder="请输入" autocomplete="off" class="layui-input">
+                <input  type="text" name="jobNumber"  placeholder="请输入" autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
 
@@ -55,13 +55,13 @@
         <div class="layui-inline">
             <label class="layui-form-label">最低薪资</label>
             <div class="layui-input-block">
-                <input  type="text" name="minSalary"  placeholder="￥" autocomplete="off" class="layui-input">
+                <input  type="text" name="minSalary"  placeholder="￥" autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">最高薪资</label>
             <div class="layui-input-block">
-                <input  type="text" name="maxSalary"  placeholder="￥" autocomplete="off" class="layui-input">
+                <input  type="text" name="maxSalary"  placeholder="￥" autocomplete="off" class="layui-input" lay-verify="required">
             </div>
         </div>
 
@@ -70,14 +70,14 @@
         <div class="layui-inline">
             <label class="layui-form-label">开始时间</label>
             <div class="layui-input-block">
-                <input  type="text" id="beginTime" name="beginTime"  autocomplete="off" class="layui-input" >
+                <input  type="text" id="beginTime" name="beginTime" lay-verify="required" autocomplete="off" class="layui-input" >
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label">结束时间</label>
             <div class="layui-input-block">
-                <input  type="text" id="endTime" name="endTime"  autocomplete="off" class="layui-input" >
+                <input  type="text" id="endTime" name="endTime" lay-verify="required" autocomplete="off" class="layui-input" >
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">工作地址</label>
         <div class="layui-input-inline">
-            <select name="jobProvince" id="jobProvince" lay-filter="queryProvince">
+            <select name="jobProvince" id="jobProvince" lay-filter="queryProvince" lay-verify="required">
             </select>
         </div>
         <div class="layui-input-inline">
@@ -103,7 +103,7 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">应聘条件</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" name="recruitCondition" class="layui-textarea"></textarea>
+            <textarea placeholder="请输入内容" name="recruitCondition" class="layui-textarea" lay-verify="required"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text" style="display: none">
@@ -111,6 +111,7 @@
             <input  disabled="disabled"  name="userId" class="layui-input" />
             <input disabled="disabled" name="recruitId" class="layui-input"/>
             <input disabled="disabled" name="comId" class="layui-input"/>
+            <input disabled="disabled" name="status" class="layui-input"/>
 
         </div>
     </div>
@@ -147,7 +148,11 @@
             var jobArea = Province+City+Town;
             data1['jobArea'] = jobArea;
             //todo 修改ajax
-            console.log(data1);
+            if(data1.status !='1'){
+                layer.alert('企业信息未审核，无法发布');
+                return;
+            }
+            data1['status'] = '0';
             $.ajax({
                 url: '<%=contextPath%>/recruit/addRecruit',
                 type: "post",
@@ -233,7 +238,6 @@
                     layer.alert('系统异常');
                 }
             });
-
             //表单初始赋值
             form.val('form1', data1);
             form.render();

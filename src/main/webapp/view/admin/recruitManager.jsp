@@ -57,7 +57,7 @@
         table.render({
             elem: '#demo'
             , height: 400
-            , url: '<%=contextPath%>/recruit/queryRecruit'
+            , url: '<%=contextPath%>/recruit/queryMyRecruit'
             , page: true //开启分页
             , skin: 'line'
             // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档

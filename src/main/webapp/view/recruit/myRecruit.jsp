@@ -63,6 +63,19 @@
             </select>
         </div>
 
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核状态</label>
+        <div class="layui-input-inline">
+            <select name="status" id="status">
+            </select>
+        </div>
+        <label class="layui-form-label">是否失效</label>
+        <div class="layui-input-inline">
+            <select name="valid" id="valid">
+            </select>
+        </div>
+
         <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
@@ -75,7 +88,7 @@
     <a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="del">删除</a>
 
 </script>
-
+<script type="text/javascript" src="<%=contextPath%>/js/check.js"></script>
 <script type="text/javascript">
 
     layui.use(['table','form','laydate'], function() {
@@ -87,14 +100,32 @@
         table.render({
             elem: '#demo'
             , height: 500
-            , url: '<%=contextPath%>/recruit/queryRecruit?userId=<%=userId%>'
+            , url: '<%=contextPath%>/recruit/queryMyRecruit?userId=<%=userId%>'
             , page: true //开启分页
             , toolbar: 'default'
             , skin: 'line'
             // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'},
-                {field: 'comId', title: '企业ID', width: 130, sort: true, fixed: 'left'}
+                {field:'status',title:'审核状态',width:130,
+                    templet:function (data) {
+                        if(data.status=='1'){
+                            return '审核通过';
+                        }else if(data.status =='2'){
+                            return '审核失败';
+                        }else{
+                            return '待审核';
+                        }
+                    }},
+                {field:'valid',title:'是否过期',width:130, templet:function (data) {
+                        if(data.valid=='1'){
+                            return '有效';
+                        }else if(data.valid =='2'){
+                            return '过期';
+                        }else{
+                            return '失效';
+                        }
+                    }}
+                , {field: 'comId', title: '企业ID', width: 130, sort: true}
                 , {field: 'comName', title: '企业名称', width: 130, sort: true}
                 , {field: 'jobName', title: '招聘职位', width: 130, sort: true}
                 , {field: 'jobNumber', title: '招聘人数', width: 130, sort: true}
@@ -124,7 +155,7 @@
             var jobArea = Province+City+Town;
             data['jobArea'] = jobArea;
             table.reload('demo', {
-                url: '<%=contextPath%>/recruit/queryRecruit?userId=<%=userId%>'
+                url: '<%=contextPath%>/recruit/queryMyRecruit?userId=<%=userId%>'
                 ,where: data //设定异步数据接口的额外参数
                 //,height: 300
                 ,method:'post'
@@ -150,6 +181,8 @@
                 $("#queryProvince").html(htmls);
             }
         });
+        $("#valid").html(getDict('valid'));
+        $("#status").html(getDict('status'));
         form.render('select');//需要渲染一下
 
         //区域市事件

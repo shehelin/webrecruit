@@ -41,6 +41,7 @@ public class UserComDto {
     private String jobCity;                     //市
     private String jobTown;                     //区/县
     private String status;
+    private String valid;
 
 
     private CompanyEntity companyEntity;
@@ -304,5 +305,13 @@ public class UserComDto {
 
     public void setJobTown(String jobTown) {
         this.jobTown = jobTown;
+    }
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
     }
 }

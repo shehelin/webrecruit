@@ -24,7 +24,8 @@ public class RecruitEntity implements Serializable {
     private String beginTime;                   //开始时间
     private String endTime;                     //结束时间
     private String createTime;                  //创建时间
-    private String status;
+    private String status = "0";
+    private String valid = "0";
 
     public String getStatus() {
         return status;
@@ -153,5 +154,13 @@ public class RecruitEntity implements Serializable {
 
     public void setJobTown(String jobTown) {
         this.jobTown = jobTown;
+    }
+
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
     }
 }

@@ -28,6 +28,7 @@
         <result property="empId" column="t_emp_id" jdbcType="VARCHAR"/>
         <result property="userId" column="t_user_id" jdbcType="VARCHAR" />
         <result property="empName" column="t_emp_name" jdbcType="VARCHAR" />
+        <result property="email"  column="t_email" jdbcType="VARCHAR"/>
         <result property="empJob" column="t_emp_job" jdbcType="VARCHAR" />
         <result property="empSalary" column="t_emp_salary" jdbcType="VARCHAR" />
         <result property="empArea" column="t_emp_area" jdbcType="VARCHAR" />
@@ -118,6 +119,7 @@
         select
         a.t_emp_id,
         a.t_user_id,
+        u.t_email,
         a.t_emp_name,
         a.t_emp_job,
         a.t_emp_salary,
@@ -130,6 +132,7 @@
         from t_emp a
         LEFT JOIN t_emp_rel_com b ON a.t_emp_id = b.t_emp_id
         LEFT JOIN t_company c on b.t_com_id = c.t_com_id
+        LEFT JOIN t_user u on u.t_user_id = a.t_user_id
         WHERE 1=1
         AND b.status in('0','1')
         <if test="comId !=null &amp;&amp; comId != ''">

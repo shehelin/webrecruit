@@ -62,6 +62,8 @@
         <result property="realName" column="t_real_Name" jdbcType="VARCHAR"/>
         <result property="email" column="t_email" jdbcType="VARCHAR"/>
         <result property="phone" column="t_phone" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
+        <result property="valid" column="valid" jdbcType="VARCHAR"/>
 
     </resultMap>
 
@@ -71,6 +73,7 @@
       t_recruit_id,t_com_id,t_user_id,t_job_name,t_job_number,t_job_area,
       t_recruit_condition, t_min_salary,t_max_salary,
       t_begin_time, t_end_time, t_create_time,t_job_province,t_job_city,t_job_town
+      ,status,valid
       )VALUES (
           #{recruitId},
           #{comId},
@@ -86,7 +89,9 @@
           #{createTime},
           #{jobProvince},
           #{jobCity},
-          #{jobTown}
+          #{jobTown},
+          #{status},
+          #{valid}
       )
     </insert>
 
@@ -99,18 +104,28 @@
 
     <update id="updateRecruit" parameterType="com.hl.recruit.entity.RecruitEntity">
         UPDATE t_recruit
-        SET
-        t_job_name = #{jobName},
-        t_job_number = #{jobNumber},
-        t_job_area = #{jobArea},
-        t_job_province = #{jobProvince},
-        t_job_city = #{jobCity},
-        t_job_town = #{jobTown},
-        t_recruit_condition = #{recruitCondition},
-        t_min_salary = #{minSalary},
-        t_max_salary = #{maxSalary},
-        t_begin_time = #{beginTime},
-        t_end_time = #{endTime}
+
+        <set>
+            <if test="status!=null &amp;&amp;status != '' ">
+                status = #{status},
+            </if>
+            <if test="valid!=null  &amp;&amp;valid != ''">
+                valid = #{valid},
+            </if>
+            t_job_name = #{jobName},
+            t_job_number = #{jobNumber},
+            t_job_area = #{jobArea},
+            t_job_province = #{jobProvince},
+            t_job_city = #{jobCity},
+            t_job_town = #{jobTown},
+            t_recruit_condition = #{recruitCondition},
+            t_min_salary = #{minSalary},
+            t_max_salary = #{maxSalary},
+            t_begin_time = #{beginTime},
+            t_end_time = #{endTime},
+
+        </set>
+
         WHERE
           t_recruit_id = #{recruitId}
         AND t_user_id = #{userId}
@@ -119,10 +134,54 @@
     <select id ="queryRecruit" parameterType="java.util.Map" resultMap="UserComResultMap">
       SELECT t_recruit_id,r.t_com_id,c.t_com_name,r.t_job_name,
         r.t_job_number,r.t_job_area,r.t_min_salary,r.t_job_province,r.t_job_city,r.t_job_town,
-        r.t_max_salary,r.t_begin_time,r.t_end_time
+        r.t_max_salary,r.t_begin_time,r.t_end_time,r.status
         from t_recruit r
       LEFT JOIN t_company c on r.t_user_id = c.t_user_id
        WHERE 1=1
+        AND r.t_job_number > 0
+        AND r.valid = 1
+        <if test="status != null &amp;&amp; status != '' ">
+            AND r.status = #{status}
+        </if>
+        <if test="jobName != null &amp;&amp; jobName != ''">
+            AND r.t_job_name LIKE CONCAT('%',#{jobName},'%')
+        </if>
+        <if test="jobArea != null &amp;&amp; jobArea != ''">
+            AND r.t_job_area LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_province LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_city LIKE CONCAT('%',#{jobArea},'%')
+            OR r.t_job_town LIKE CONCAT('%',#{jobArea},'%')
+        </if>
+        <if test="enjoySalary != null &amp;&amp; enjoySalary != ''">
+            AND r.t_min_salary &lt;= #{enjoySalary}
+            AND r.t_max_salary >= #{enjoySalary}
+        </if>
+        <if test="beginTime != null &amp;&amp; beginTime != '' ">
+            AND r.t_begin_time &lt;= #{beginTime}
+            AND r.t_end_time >= #{beginTime}
+        </if>
+        <if test="endTime != null &amp;&amp; endTime != ''">
+            AND r.t_end_time >= #{endTime}
+            AND r.t_begin_time &lt;=#{endTime}
+        </if>
+        <if test="userId != null &amp;&amp; userId != '' ">
+            AND r.t_user_id = #{userId}
+        </if>
+    </select>
+
+    <select id ="queryMyRecruit" parameterType="java.util.Map" resultMap="UserComResultMap">
+        SELECT t_recruit_id,r.t_com_id,c.t_com_name,r.t_job_name,
+        r.t_job_number,r.t_job_area,r.t_min_salary,r.t_job_province,r.t_job_city,r.t_job_town,
+        r.t_max_salary,r.t_begin_time,r.t_end_time,r.status,r.valid
+        from t_recruit r
+        LEFT JOIN t_company c on r.t_user_id = c.t_user_id
+        WHERE 1=1
+        <if test="valid != null &amp;&amp; valid != '' ">
+            AND r.valid = #{valid}
+        </if>
+        <if test="status != null &amp;&amp; status != '' ">
+            AND r.status = #{status}
+        </if>
         <if test="jobName != null &amp;&amp; jobName != ''">
             AND r.t_job_name LIKE CONCAT('%',#{jobName},'%')
         </if>
@@ -155,7 +214,7 @@
           r.t_job_name,r.t_job_number,r.t_job_area,
           r.t_recruit_condition,r.t_min_salary,r.t_max_salary,
           r.t_begin_time,r.t_end_time,r.t_job_province,r.t_job_city,r.t_job_town,u.t_user_id,
-          u.t_real_name,u.t_phone,u.t_email
+          u.t_real_name,u.t_phone,u.t_email,r.valid,r.status
         FROM
         t_recruit r
         INNER JOIN t_company c ON r.t_com_id = c.t_com_id AND r.t_user_id=c.t_user_id
@@ -170,4 +229,21 @@
           AND t_user_id = #{userId}
       </if>
     </select>
+
+    <update id="updateStatus" parameterType="com.hl.recruit.entity.RecruitEntity">
+        update t_recruit
+        set status = #{status}
+        where t_recruit_id = #{recruitId}
+    </update>
+
+    <update id="updateValid" parameterType="com.hl.recruit.entity.RecruitEntity">
+        update t_recruit
+        set valid = #{valid}
+        where t_recruit_id = #{recruitId}
+    </update>
+
+    <select id="queryEndTime" resultMap="recruitResultMap">
+        select t_recruit_id,t_end_time from t_recruit
+    </select>
+
 </mapper>

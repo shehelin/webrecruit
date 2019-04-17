@@ -12,27 +12,35 @@
     <legend>企业信息</legend>
 </fieldset>
 <form id="form1" lay-filter="form1" class="layui-form layui-form-pane">
-
     <div class="layui-form-item">
-
+        <div class="layui-inline">
+            <label class="layui-form-label">审核状态</label>
+            <div class="layui-input-block">
+                <select disabled="disabled"  id = "status" name="status" lay-verify="required">
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">企业编号</label>
             <div class="layui-input-block">
-                <input disabled="disabled" type="text" name="comId" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                <input disabled="disabled" type="text" id="comId" name="comId" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-inline" >
             <label class="layui-form-label">企业名称</label>
             <div class="layui-input-block" >
-               <input diabled="disabled" type="text" name="comName" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+               <input disabled="disabled" type="text" name="comName" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label">企业类型</label>
             <div class="layui-input-block">
-                <input disabled="disabled" type="text" name="comType" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                <select  name="comType" id="comType" lay-verify="required" >
+                </select>
             </div>
         </div>
     </div>
@@ -80,7 +88,7 @@
                 class="layui-btn layui-btn-primary" onclick="doCompanys()" >保存</button>
     </div>
 </form>
-
+<script type="text/javascript" src="<%=contextPath%>/js/check.js"></script>
 <script type="text/javascript">
 
     layui.use(['form', 'layedit', 'laydate'], function(){
@@ -101,6 +109,10 @@
         // var editIndex = layedit.build('LAY_demo_editor');
 
         var data1;
+        //字典
+        $("#comType").html(getDict("BUSINESS_TYPE"));
+        $("#status").html(getDict("status"));
+        form.render('select');
 
         $.ajax({
             url : "<%=contextPath%>/company/queryCompanyById",
@@ -123,17 +135,19 @@
 
         //表单初始赋值
         form.val('form1', data1);
-
         form.render();
     });
 
     function Controller() {
         $("[disabled]").removeAttr("disabled");
+        $("#comId").attr("readonly","true");
         $("#doCompany").attr('class','layui-btn');
     }
 
     function doCompanys(){
         var data1 = getFormData("#form1");
+        console.log(data1);
+        debugger;
         $.ajax({
             url : "<%=contextPath%>/company/doCompany",
             type : "post",
@@ -162,6 +176,7 @@
     function getFormData(id) {
         var d = {};
         var t = $(id).serializeArray();
+        debugger;
         $.each(t, function () {
             d[this.name] = this.value;
         });

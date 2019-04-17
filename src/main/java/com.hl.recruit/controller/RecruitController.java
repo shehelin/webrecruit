@@ -66,6 +66,24 @@ public class RecruitController {
         return map;
     }
 
+    @RequestMapping("/queryMyRecruit")
+    @ResponseBody
+    public Map queryMyRecruit(@RequestParam Map<String,Object> maps, Page page, HttpServletRequest request){
+        String pageIndex = request.getParameter("page");
+        String pageSize  = request.getParameter("limit");
+        int index = Integer.parseInt(pageIndex);
+        int size =Integer.parseInt(pageSize);
+        page.setPageIndex(index-1);
+        page.setPageSize(size);
+        List list = recruitService.queryMyRecruit(page,maps);
+        Map map = new HashMap<String,Object>(4);
+        map.put("code",0);
+        map.put("data",list);
+        map.put("msg","");
+        map.put("count",page.getTotalCount());
+        return map;
+    }
+
     @RequestMapping("/queryRecruitById")
     @ResponseBody
     public List<UserComDto> queryRecruitById(@RequestParam Map<String,Object> maps, HttpServletRequest request){

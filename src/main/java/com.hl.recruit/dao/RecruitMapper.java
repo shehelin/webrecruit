@@ -60,4 +60,12 @@ public interface RecruitMapper {
      */
     int queryRecruitCount(Map maps);
 
+    /**
+     * 分页查询招聘信息-企业用户
+     * @param pageBounds
+     * @param maps
+     * @return
+     */
+    List<UserComDto> queryMyRecruit(Map maps, PageBounds pageBounds);
+
 }

@@ -89,6 +89,24 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
     @Override
+    public List<UserComDto> queryMyRecruit(Page page, Map maps) {
+        try {
+            PageBounds pageBounds = page.toPageBounds();
+            if(maps.containsKey("beginTime") && maps.containsKey("endTime")){
+                if(maps.get("beginTime").toString().compareTo(maps.get("endTime").toString())>0){
+                    return new ArrayList<UserComDto>();
+                }
+            }
+            List list = recruitMapper.queryMyRecruit(maps,pageBounds);
+            page.setTotalCount(queryRecruitCount(maps));
+            return list;
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ArrayList<UserComDto>();
+        }
+    }
+
+    @Override
     public List<UserComDto> queryRecruitDetail(Map maps) {
         try {
             List list = recruitMapper.queryRecruitDetail(maps);

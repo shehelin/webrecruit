@@ -18,6 +18,7 @@ public class EmpRelComDto implements Serializable {
     private String comName;
     private String status;
     private String createTime;
+    private String email;
 
     public String getEmpId() {
         return empId;
@@ -105,5 +106,13 @@ public class EmpRelComDto implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

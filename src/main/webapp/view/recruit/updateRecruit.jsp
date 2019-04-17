@@ -32,7 +32,18 @@
     <legend>编辑</legend>
 </fieldset>
 <div id="form1" lay-filter="form1" class="layui-form layui-form-pane">
+    <div class="layui-form-item">
 
+        <div class="layui-inline">
+            <label class="layui-form-label">有效状态</label>
+            <div class="layui-input-block">
+                <select id="valid" name="valid">
+
+                </select>
+            </div>
+        </div>
+
+    </div>
     <div class="layui-form-item">
 
         <div class="layui-inline">
@@ -119,11 +130,13 @@
         </div>
     </div>
     <div style="margin-left: 40%">
+        <input disabled="disabled" type="text" name="status" id="status" style="display: none">
         <button class="layui-btn" lay-submit lay-filter="click">编辑</button>
         <button type="reset" class="layui-btn layui-btn-primary">重置</button>
     </div>
 
 </div>
+<script type="text/javascript" src="<%=contextPath%>/js/check.js"></script>
 <script type="text/javascript">
     layui.use(['form','laydate'], function() {
         //模块加载
@@ -209,6 +222,25 @@
                     $("#jobProvince").html(htmls);
                 }
             });
+
+            $.ajax({
+                url: '<%=contextPath%>/areaDict/queryDict',
+                type: "post",
+                dataType : "json",
+                async: false,//这得注意是同步
+                data:{
+                    dictTypeId: "valid"
+                },
+                success: function (data) {
+                    resultData = data;
+                    var htmls = '<option value=""></option>';
+                    for(var x in resultData){
+                        htmls += '<option value = "' + resultData[x].dictId + '">' + resultData[x].dictName + '</option>'
+                    }
+                    $("#valid").html(htmls);
+                }
+            });
+
             form.render('select');//需要渲染一下
         }
         /**
@@ -238,10 +270,10 @@
             });
 
             //表单初始赋值
-            console.log(data1);
             queryCity(data1.jobProvince);
             queryTown(data1.jobCity);
             form.val('form1', data1);
+            console.log(data1);
             form.render();
         }
         /**

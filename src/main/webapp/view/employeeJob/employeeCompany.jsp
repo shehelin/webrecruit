@@ -79,6 +79,9 @@
                 {field: 'empId', title: '申请编号',sort: true, fixed: 'left',hide:true}
                 ,{field: 'comId',title:'企业编号', sort:true, fixed:'left',hide:true}
                 , {field: 'empName', title: '申请人', width: 140, sort: true}
+                , {field: 'email', title: '申请人邮箱', width: 140, sort: true,templet:function (data) {
+                        return "<a href='mailto:"+data.email+"'>"+data.email+"</a>";
+                    }}
                 , {field: 'empJob', title: '岗位', width: 140, sort: true}
                 , {field: 'empSalary', title: '期望薪资', width: 140, sort: true}
                 , {field: 'empArea', title: '期望工作地点', width: 140, sort: true}
@@ -88,9 +91,9 @@
                         if(data.status == '0'){
                             return "待审核"
                         }if(data.status == '1'){
-                            return "申请通过"
+                            return "审核通过,点击邮箱发送"
                         }if(data.status == '2'){
-                            return "申请失败"
+                            return "审核失败"
                         }
                     }}
                 , {field: 'createTime', title: '申请时间', width: 140, sort: true}

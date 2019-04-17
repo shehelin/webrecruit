@@ -95,7 +95,7 @@
                         if(data.status == '0'){
                             return "待审核"
                         }if(data.status == '1'){
-                            return "申请通过"
+                            return "申请通过,请确保邮箱正确，等待进一步通知"
                         }if(data.status == '2'){
                             return "申请失败"
                         }
