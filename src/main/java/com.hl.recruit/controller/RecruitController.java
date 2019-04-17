@@ -110,4 +110,11 @@ public class RecruitController {
         recruitEntity.setCreateTime(DateUtil.getCurrentTime());
         return recruitService.addRecruit(recruitEntity);
     }
+
+    @RequestMapping("/updateStatus")
+    @ResponseBody
+    public boolean updateStatus(RecruitEntity recruitEntity){
+        return  recruitService.updateStatus(recruitEntity);
+    }
+
 }

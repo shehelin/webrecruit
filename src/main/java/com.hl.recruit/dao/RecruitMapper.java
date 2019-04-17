@@ -68,4 +68,25 @@ public interface RecruitMapper {
      */
     List<UserComDto> queryMyRecruit(Map maps, PageBounds pageBounds);
 
+
+    /** 2019-04-17
+     * 修改审核状态
+     * @param recruitEntity
+     * @return
+     */
+    int updateStatus(RecruitEntity recruitEntity);
+
+    /**
+     * 修改有效状态
+     * @param recruitEntity
+     * @return
+     */
+    int updateValid(RecruitEntity recruitEntity);
+
+    /**
+     * 查询过期的时间
+     * @return
+     */
+    List<RecruitEntity> queryEndTime();
+
 }

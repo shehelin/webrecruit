@@ -172,7 +172,7 @@
     <select id ="queryMyRecruit" parameterType="java.util.Map" resultMap="UserComResultMap">
         SELECT t_recruit_id,r.t_com_id,c.t_com_name,r.t_job_name,
         r.t_job_number,r.t_job_area,r.t_min_salary,r.t_job_province,r.t_job_city,r.t_job_town,
-        r.t_max_salary,r.t_begin_time,r.t_end_time,r.status,r.valid
+        r.t_max_salary,r.t_begin_time,r.t_end_time,r.status,r.valid,r.t_create_time
         from t_recruit r
         LEFT JOIN t_company c on r.t_user_id = c.t_user_id
         WHERE 1=1

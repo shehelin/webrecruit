@@ -90,9 +90,9 @@ public class CompanyServiceImpl implements CompanyService {
         Map maps = new HashMap<String,String>();
         maps.put("userId",userEntity.getUserId());
         companyEntity.setUserId(userEntity.getUserId());
-        companyEntity.setCreateTime(DateUtil.getCurrentTime());
         List<CompanyEntity> companyList = queryCompanyById(maps);
         if(companyList == null || companyList.size() == 0){
+            companyEntity.setCreateTime(DateUtil.getCurrentTime());
             return companyMapper.addCompany(companyEntity) > 0 ?  true:false;
         }else{
             return companyMapper.updateCompanyById(companyEntity)> 0 ?  true:false;

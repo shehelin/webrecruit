@@ -62,8 +62,7 @@
             , skin: 'line'
             // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'},
-                  {field:'status',title:'审核状态',width:130,sort:true,
+                {field:'status',title:'审核状态',width:130,sort:true,
                   templet:function (data) {
                       if(data.status=='1'){
                           return '审核通过';
@@ -72,7 +71,16 @@
                       }else{
                           return '待审核';
                       }
-                  }}
+                  }},
+                {field:'valid',title:'是否过期',width:130, templet:function (data) {
+                        if(data.valid=='1'){
+                            return '有效';
+                        }else if(data.valid =='2'){
+                            return '过期';
+                        }else{
+                            return '失效';
+                        }
+                    }}
                 , {field: 'comId', title: '企业ID', width: 130, sort: true}
                 , {field: 'comName', title: '企业名称', width: 130, sort: true}
                 , {field: 'jobName', title: '招聘职位', width: 130, sort: true}
@@ -82,6 +90,7 @@
                 , {field: 'maxSalary', title: '薪资高估', width: 130, sort: true}
                 , {field: 'beginTime', title: '招聘时间', width: 130, sort: true}
                 , {field: 'endTime', title: '结束时间', width: 130, sort: true}
+                , {field: 'createTime', title: '发布时间', width: 130, sort: true}
                 , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
             ]]
         });
@@ -104,27 +113,68 @@
                 layer.open({
                     title:'详细招聘信息',
                     type:2,
-                    area: ['400px', '400px'],
+                    area: ['700px', '400px'],
                     offset: 'auto',
                     async:false,
                     content:'<%=contextPath%>/view/recruit/recruitDetail.jsp?recruitId='+data.recruitId
                 });
+            }else if(layEvent==='yes'){
+                var data = obj.data; //获得当前行数据
+                data['status'] = '1';
+                data['valid'] = '1'
+                layer.confirm('是否通过审核？',function(){
+                    $.ajax({
+                        url: '<%=contextPath%>/recruit/updateStatus',
+                        type: "post",
+                        dataType : "json",
+                        data: data,
+                        async:false,
+                        success: function (data) {
+                            if(data){
+                                layer.alert('通过审核');
+                                reloadRecruit(null);
+                            }else{
+                                layer.alert('审核失败');
+                            }
+                        }, error: function(){
+                            layer.alert('系统异常');
+                        }
+                    });
+                });
+
+            }else if(layEvent==='no'){
+
+                var data = obj.data; //获得当前行数据
+                data['status'] = '2';
+                data['valid'] = '0';
+                layer.confirm('是否回退？',function() {
+                    $.ajax({
+                        url: '<%=contextPath%>/recruit/updateStatus',
+                        type: "post",
+                        dataType: "json",
+                        data: data,
+                        async: false,
+                        success: function (data) {
+                            if (data) {
+                                layer.alert('回退成功');
+                                reloadRecruit(null);
+                            } else {
+                                layer.alert('回退失败');
+                            }
+                        },
+                        error: function () {
+                            layer.alert('系统异常');
+                        }
+                    });
+                });
             }
+
         });
 
         //form表单提交事件
         form.on('submit(search)',function (data) {
+            reloadRecruit(data.field);
 
-            var data = data.field;
-            table.reload('demo', {
-                url: '<%=contextPath%>/recruit/queryRecruit'
-                ,where: data //设定异步数据接口的额外参数
-                //,height: 300
-                ,method:'post'
-                ,page: {
-                    curr: 1 //重新从第 1 页开始
-                }
-            });
         });
 
 
@@ -146,6 +196,19 @@
             }
         });
         form.render('select');//需要渲染一下
+
+
+        function reloadRecruit(data) {
+            table.reload('demo', {
+                url: '<%=contextPath%>/recruit/queryMyRecruit'
+                ,where: data //设定异步数据接口的额外参数
+                //,height: 300
+                ,method:'post'
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        }
 
     });
 

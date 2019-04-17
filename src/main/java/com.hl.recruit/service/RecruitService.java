@@ -59,4 +59,21 @@ public interface RecruitService {
      */
     List<UserComDto> queryMyRecruit(Page page, Map maps);
 
+    /**
+     * 2019-04-17
+     *  修改审核状态
+     * @param recruitEntity
+     * @return
+     */
+    boolean updateStatus(RecruitEntity recruitEntity);
+
+
+
+    /**
+     * 自动查询过期的时间
+     * @return
+     */
+    void AutoQueryEndTime();
+
+
 }

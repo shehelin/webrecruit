@@ -5,14 +5,15 @@ import com.hl.recruit.dao.RecruitMapper;
 import com.hl.recruit.dto.UserComDto;
 import com.hl.recruit.entity.RecruitEntity;
 import com.hl.recruit.service.RecruitService;
-import com.hl.recruit.util.DateUtil;
 import com.hl.recruit.util.Page;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * RecruitServiceImpl class
@@ -25,6 +26,7 @@ public class RecruitServiceImpl implements RecruitService {
     @Autowired
     RecruitMapper recruitMapper;
 
+    private static final Logger logger = Logger.getLogger(RecruitServiceImpl.class);
     @Override
     public boolean addRecruit(RecruitEntity recruitEntity) {
         int count = 0;
@@ -121,5 +123,45 @@ public class RecruitServiceImpl implements RecruitService {
     public int queryRecruitCount(Map maps) {
         return recruitMapper.queryRecruitCount(maps);
     }
+
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStatus(RecruitEntity recruitEntity) {
+       int count = 0;
+
+       count += recruitMapper.updateStatus(recruitEntity) ;
+       count += recruitMapper.updateValid(recruitEntity) ;
+       if(count == 2){
+           return true;
+       }else{
+            return false;
+       }
+    }
+
+    @Override
+    @Scheduled(cron="0 0 0 * * ?") //每天凌晨0点自动扫描到期任务
+    @Transactional(rollbackFor = Exception.class)
+    public void AutoQueryEndTime() {
+        try{
+            logger.info("开始扫描招聘到期时间任务");
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String localTime = format.format(date);
+            Date localDate = format.parse(localTime);
+            List<RecruitEntity> list = recruitMapper.queryEndTime();
+            for(RecruitEntity recruit : list){
+                Date endTime = format.parse(recruit.getEndTime());
+                if(localDate.compareTo(endTime) <= 0){ continue; }
+                recruit.setValid("2");
+                recruitMapper.updateValid(recruit);
+            }
+            logger.info("-----------扫描结束");
+        }catch (Exception e){
+            logger.info("报错-----"+e.getMessage());
+        }
+    }
+
 
 }
