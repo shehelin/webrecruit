@@ -140,7 +140,7 @@
                         }, function() {
                             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                             parent.layer.close(index); //关闭窗口
-                            parent.window.location.href = "<%=contextPath%>/recruit/"; //刷新父页面
+                            parent.window.location.href = "<%=contextPath%>/"; //刷新父页面
                         });
 
                     }else{
@@ -161,7 +161,7 @@
         form.on('submit(cancel)',function () {
             var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
             parent.layer.close(index); //关闭窗口
-            parent.window.location.href = "<%=contextPath%>/recruit/"; //刷新父页面
+            parent.window.location.href = "<%=contextPath%>/"; //刷新父页面
         });
 
         //区域市事件

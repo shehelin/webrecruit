@@ -22,14 +22,6 @@
                 <input  type="text" name="jobName"  placeholder="请输入" autocomplete="off" class="layui-input">
             </div>
         </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label">期望薪资</label>
-            <div class="layui-input-block">
-                <input  type="text" name="enjoySalary"  placeholder="￥" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
         <div class="layui-inline">
             <label class="layui-form-label">开始时间</label>
             <div class="layui-input-block">

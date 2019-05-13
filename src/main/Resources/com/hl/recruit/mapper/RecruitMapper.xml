@@ -187,9 +187,6 @@
         </if>
         <if test="jobArea != null &amp;&amp; jobArea != ''">
             AND r.t_job_area LIKE CONCAT('%',#{jobArea},'%')
-            OR r.t_job_province LIKE CONCAT('%',#{jobArea},'%')
-            OR r.t_job_city LIKE CONCAT('%',#{jobArea},'%')
-            OR r.t_job_town LIKE CONCAT('%',#{jobArea},'%')
         </if>
         <if test="enjoySalary != null &amp;&amp; enjoySalary != ''">
             AND r.t_min_salary &lt;= #{enjoySalary}

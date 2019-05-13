@@ -140,7 +140,7 @@
 
     function Controller() {
         $("[disabled]").removeAttr("disabled");
-        $("#comId").attr("readonly","true");
+        // $("#comId").attr("readonly","true");
         $("#doCompany").attr('class','layui-btn');
     }
 

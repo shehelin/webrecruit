@@ -91,7 +91,7 @@
 
     <mvc:view-controller path="/" view-name="/"/>
     <mvc:view-controller path="/login" view-name="login/login"/>
-    <mvc:view-controller path="/errors/showError" view-name="404"/>
+    <mvc:view-controller path="/errors/showError" view-name=""/>
 
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

@@ -53,7 +53,7 @@
           #{comAddress},
           #{userId},
           #{comTel},
-          #{createTime}
+          #{createTime},
           #{status}
       )
     </insert>

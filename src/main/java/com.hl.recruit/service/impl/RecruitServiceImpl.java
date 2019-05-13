@@ -61,6 +61,8 @@ public class RecruitServiceImpl implements RecruitService {
     public boolean updateRecruit(RecruitEntity recruitEntity) {
         int count = 0;
         try{
+            recruitEntity.setValid("0");
+            recruitEntity.setStatus("0");
             count = recruitMapper.updateRecruit(recruitEntity);
             if(count > 0){
                 return true;

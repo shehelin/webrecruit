@@ -42,7 +42,7 @@
             </select>
           </div>
           <div class="form-group" style="width: 70%;float:right">
-            <button id="btnOn" type="button" class="btn btn-default" onclick="doRegister();" disabled="disabled">注册</button>
+            <button id="btnOn" type="button" class="btn btn-default" onclick="doRegister();" >注册</button>
             <button type="reset" class="btn btn-default">重置</button>
           </div>
         </form>
@@ -55,7 +55,6 @@
 <script type="text/javascript">
     //todo 2019-03-19
     $(function () {
-        btnOpenClick();
         /* 校验 */
         $("#userId").blur(function () {
             var userId = $('#userId').val();
@@ -82,7 +81,7 @@
         });
 
         $('#userName').blur(function () {
-            btnOpenClick();
+
             var userName = $('#userName').val();
             var ct = $("#ctName");
             if(userName == "" || userName == null){
@@ -93,7 +92,7 @@
         });
 
         $('#pwd').blur(function () {
-            btnOpenClick();
+
             var pwd = $('#pwd').val();
             var ct = $("#ctPwd");
             if(pwd == null || pwd == ""){
@@ -104,7 +103,6 @@
         });
 
         $('#reviewerPwd').blur(function () {
-            btnOpenClick();
             var pwd = $('#pwd').val();
             var rpwd = $('#reviewerPwd').val();
             var ct = $("#ctRPwd");
@@ -117,16 +115,10 @@
             }
         });
 
-        //伪检测
-        $('#userStatus').blur(function () {
-            btnOpenClick();
-        });
-
     });
 
     function doRegister() {
         var data = getFormData('#form1');
-        debugger;
         $.ajax({
             url : "<%=contextPath%>/user/doRegister",
             type : "post",
@@ -179,21 +171,7 @@
         ct.html("warn");
     }
 
-    function btnOpenClick(){
-        var result = 0;
-        var count = 0;
-        $("span[name='ct']").each(function(i){
-            count = ++i;
-            if($(this).html()=='ok'){
-                ++result;
-            }
-        });
-        if(result == count){
-            $('#btnOn').removeAttr('disabled');
-        }else {
-            $('#btnOn').attr('disabled','disabled');
-        }
-    }
+
 </script>
 <%-- 文件上传示例 --%>
 <%--<div class="form-group">--%>

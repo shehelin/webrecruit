@@ -11,7 +11,7 @@ public class EmpRelCom {
     private String relId;
     private String empId;
     private String comId;
-    private String status;
+    private String status = "0";
 
 
     public String getRelId() {

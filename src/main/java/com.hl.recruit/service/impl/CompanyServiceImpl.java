@@ -97,6 +97,7 @@ public class CompanyServiceImpl implements CompanyService {
         List<CompanyEntity> companyList = queryCompanyById(maps);
         if(companyList == null || companyList.size() == 0){
             companyEntity.setCreateTime(DateUtil.getCurrentTime());
+            companyEntity.setStatus("0");
             return companyMapper.addCompany(companyEntity) > 0 ?  true:false;
         }else{
             return companyMapper.updateCompanyById(companyEntity)> 0 ?  true:false;
