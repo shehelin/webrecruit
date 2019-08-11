@@ -1,0 +1,1 @@
+INSERT INTO t_user (t_user_id, t_user_name, t_real_name, t_pwd, t_phone, status, t_sex, t_email, t_user_image, t_create_time) VALUES ('admin', 'ADMIN', '管理员', 'admin', '15050505050', '0', '0', '1505050@150.com', null, now());
