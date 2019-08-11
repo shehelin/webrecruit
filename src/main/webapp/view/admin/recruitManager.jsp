@@ -109,6 +109,10 @@
                 , {field: 'createTime', title: '发布时间', width: 130, sort: true}
                 , {title: '操作', align: 'center', toolbar: '#barDemo',fixed:'right',width: 200}
             ]]
+            ,
+            where:{
+                user:'admin'
+            }
         });
         //日期映射
         laydate.render({
