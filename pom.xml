@@ -20,7 +20,7 @@
       <!--spring版本指定-->
       <spring.version>4.0.2.RELEASE</spring.version>
       <!--JSON版本指定-->
-      <jackson.version>2.9.3</jackson.version>
+      <jackson.version>2.12.7.1</jackson.version>
   </properties>
 
   <dependencies>
